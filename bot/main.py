@@ -1,4 +1,5 @@
 import asyncio
+import os
 from aiogram import Bot, Dispatcher
 from aiogram.filters import CommandStart
 from aiogram.types import (
@@ -8,8 +9,11 @@ from aiogram.types import (
     WebAppInfo
 )
 
-TOKEN = "BOT_TOKEN"
-WEB_APP_URL = "https://your-domain.com"
+TOKEN = os.getenv("BOT_TOKEN")
+if not TOKEN:
+    raise RuntimeError("BOT_TOKEN muhit o'zgaruvchisi sozlanmagan")
+
+WEB_APP_URL = "https://abdulloherkinov89-boop.github.io/puffy-wirinly/"
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()

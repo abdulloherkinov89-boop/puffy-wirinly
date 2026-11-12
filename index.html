@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="uz">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#101827" />
+    <title>Puffy Mini App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        background: #101827;
+        color: #f4f7fb;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background: radial-gradient(ellipse at top, #263d64 0%, #101827 62%);
+      }
+
+      main {
+        width: min(100%, 440px);
+        padding: 36px 28px;
+        text-align: center;
+        border: 1px solid #ffffff1a;
+        border-radius: 28px;
+        background: #ffffff0d;
+        box-shadow: 0 24px 80px #0005;
+      }
+
+      .icon { font-size: 56px; }
+      h1 { margin: 16px 0 10px; font-size: clamp(28px, 8vw, 38px); }
+      p { margin: 0; color: #c4cfdf; line-height: 1.65; }
+
+      button {
+        width: 100%;
+        margin-top: 28px;
+        padding: 15px 20px;
+        border: 0;
+        border-radius: 16px;
+        background: #74b3ff;
+        color: #102039;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="icon" aria-hidden="true">☁️</div>
+      <h1>Puffy Mini App</h1>
+      <p>Assalomu alaykum! Mini App muvaffaqiyatli ochildi.</p>
+      <button id="action" type="button">Davom etish</button>
+    </main>
+    <script>
+      const telegram = window.Telegram?.WebApp;
+      telegram?.ready();
+      telegram?.expand();
+
+      document.getElementById("action").addEventListener("click", () => {
+        if (telegram) {
+          telegram.showAlert("Mini App ishlayapti!");
+        } else {
+          alert("Mini App ishlayapti!");
+        }
+      });
+    </script>
+  </body>
+</html>
