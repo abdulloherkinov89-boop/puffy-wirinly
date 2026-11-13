@@ -17,7 +17,7 @@ WEB_APP_URL = os.getenv(
     "WEB_APP_URL",
     os.getenv(
         "RENDER_EXTERNAL_URL",
-        "https://abdulloherkinov89-boop.github.io/puffy-wirinly/",
+        "https://puffy-wirinly.onrender.com",
     ),
 ).strip()
 if not WEB_APP_URL.startswith("https://"):
