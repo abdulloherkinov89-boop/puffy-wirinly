@@ -7,7 +7,7 @@ from fastapi.responses import FileResponse
 
 from bot.main import create_bot, run_bot
 
-FRONTEND_INDEX = Path(__file__).resolve().parent.parent / "frontend" / "index.html"
+FRONTEND_HOME = Path(__file__).resolve().parent.parent / "frontend" / "home.html"
 
 
 @asynccontextmanager
@@ -32,4 +32,4 @@ app = FastAPI(lifespan=lifespan)
 
 @app.get("/")
 async def home():
-    return FileResponse(FRONTEND_INDEX)
+    return FileResponse(FRONTEND_HOME)
