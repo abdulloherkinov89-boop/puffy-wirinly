@@ -13,7 +13,12 @@ TOKEN = os.getenv("BOT_TOKEN")
 if not TOKEN:
     raise RuntimeError("BOT_TOKEN muhit o'zgaruvchisi sozlanmagan")
 
-WEB_APP_URL = "https://abdulloherkinov89-boop.github.io/puffy-wirinly/"
+WEB_APP_URL = os.getenv(
+    "WEB_APP_URL",
+    "https://abdulloherkinov89-boop.github.io/puffy-wirinly/",
+).strip()
+if not WEB_APP_URL.startswith("https://"):
+    raise RuntimeError("WEB_APP_URL HTTPS manzil bo'lishi kerak")
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
