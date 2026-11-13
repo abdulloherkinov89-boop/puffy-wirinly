@@ -9,18 +9,16 @@ from aiogram.types import (
     WebAppInfo
 )
 
-TOKEN = os.getenv("BOT_TOKEN")
-if not TOKEN:
-    raise RuntimeError("BOT_TOKEN muhit o'zgaruvchisi sozlanmagan")
-
 WEB_APP_URL = os.getenv(
     "WEB_APP_URL",
-    "https://abdulloherkinov89-boop.github.io/puffy-wirinly/",
+    os.getenv(
+        "RENDER_EXTERNAL_URL",
+        "https://abdulloherkinov89-boop.github.io/puffy-wirinly/",
+    ),
 ).strip()
 if not WEB_APP_URL.startswith("https://"):
     raise RuntimeError("WEB_APP_URL HTTPS manzil bo'lishi kerak")
 
-bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
 
@@ -46,8 +44,23 @@ async def start_handler(message: Message):
     )
 
 
-async def main():
-    await dp.start_polling(bot)
+def create_bot() -> Bot:
+    token = os.getenv("BOT_TOKEN")
+    if not token:
+        raise RuntimeError("BOT_TOKEN muhit o'zgaruvchisi sozlanmagan")
+    return Bot(token=token)
+
+
+async def run_bot(bot: Bot) -> None:
+    await dp.start_polling(bot, close_bot_session=False)
+
+
+async def main() -> None:
+    bot = create_bot()
+    try:
+        await run_bot(bot)
+    finally:
+        await bot.session.close()
 
 
 if __name__ == "__main__":
