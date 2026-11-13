@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>United Burger — Menu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-american { font-family: 'Oswald', sans-serif; }
+    </style>
+</head>
+<body class="bg-neutral-950 text-white pb-24 antialiased select-none">
+
+    <!-- Tepasi: United Burger logotipi (base.html ga o'tishi mumkin) -->
+    <header class="sticky top-0 z-50 bg-neutral-950/90 backdrop-blur-md border-b border-red-600/30 px-4 py-3.5 flex items-center justify-between shadow-lg shadow-red-950/20">
+        <button class="flex items-center space-x-2.5 active:scale-95 transition">
+            <span class="font-american text-2xl font-bold tracking-wider text-red-600 uppercase">United Burger</span>
+            <div class="w-7 h-4 flex flex-col justify-between py-0.5">
+                <span class="w-full h-1 bg-red-600 rounded-t-full"></span>
+                <span class="w-full h-0.5 bg-white"></span>
+                <span class="w-full h-1 bg-red-600 rounded-b-full"></span>
+            </div>
+        </button>
+        <span class="bg-red-600/15 border border-red-600/40 text-red-500 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">
+            USA Vibe
+        </span>
+    </header>
+
+    <!-- shotdan bol -->
+
+    <main class="max-w-md mx-auto p-4 space-y-8">
+
+        <!-- 1. KOMBO -->
+        <section>
+            <h2 class="font-american text-3xl font-bold tracking-wide text-red-600 uppercase mb-4 border-l-4 border-red-600 pl-3">Kombo</h2>
+            <div class="space-y-3.5">
+                
+                <!-- Kombo 1 -->
+                <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-4 shadow-md">
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="text-lg font-bold">KOMBO 1</h3>
+                        <span class="text-xs text-neutral-500 line-through">84 000</span>
+                    </div>
+                    <p class="text-xs text-neutral-400 mb-3">Qarsildoq Smash burger, Fri, Cola, Sous</p>
+                    <div class="flex items-center justify-between pt-3 border-t border-neutral-800/80">
+                        <span class="text-lg font-black text-red-500">78 000 so'm</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                                <button onclick="changeQty(this, -1)" class="px-2.5 py-1 text-neutral-300 font-bold">-</button>
+                                <span class="qty-val px-2 text-sm font-bold">1</span>
+                                <button onclick="changeQty(this, 1)" class="px-2.5 py-1 text-neutral-300 font-bold">+</button>
+                            </div>
+                            <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3.5 py-2 rounded-lg transition shadow-md shadow-red-600/20">
+                                Savatga
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kombo 2 -->
+                <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-4 shadow-md">
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="text-lg font-bold">KOMBO 2</h3>
+                        <span class="text-xs text-neutral-500 line-through">77 000</span>
+                    </div>
+                    <p class="text-xs text-neutral-400 mb-3">Klassik Smash Burger, Fri, Cola, Sous</p>
+                    <div class="flex items-center justify-between pt-3 border-t border-neutral-800/80">
+                        <span class="text-lg font-black text-red-500">71 000 so'm</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                                <button onclick="changeQty(this, -1)" class="px-2.5 py-1 text-neutral-300 font-bold">-</button>
+                                <span class="qty-val px-2 text-sm font-bold">1</span>
+                                <button onclick="changeQty(this, 1)" class="px-2.5 py-1 text-neutral-300 font-bold">+</button>
+                            </div>
+                            <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3.5 py-2 rounded-lg transition shadow-md shadow-red-600/20">
+                                Savatga
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kombo 3 -->
+                <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-4 shadow-md">
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="text-lg font-bold">KOMBO 3</h3>
+                        <span class="text-xs text-neutral-500 line-through">66 000</span>
+                    </div>
+                    <p class="text-xs text-neutral-400 mb-3">Tovuqli Burger, Fri, Cola, Souse</p>
+                    <div class="flex items-center justify-between pt-3 border-t border-neutral-800/80">
+                        <span class="text-lg font-black text-red-500">59 000 so'm</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                                <button onclick="changeQty(this, -1)" class="px-2.5 py-1 text-neutral-300 font-bold">-</button>
+                                <span class="qty-val px-2 text-sm font-bold">1</span>
+                                <button onclick="changeQty(this, 1)" class="px-2.5 py-1 text-neutral-300 font-bold">+</button>
+                            </div>
+                            <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3.5 py-2 rounded-lg transition shadow-md shadow-red-600/20">
+                                Savatga
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kombo 4 -->
+                <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-4 shadow-md">
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="text-lg font-bold">KOMBO 4</h3>
+                        <span class="text-xs text-neutral-500 line-through">66 000</span>
+                    </div>
+                    <p class="text-xs text-neutral-400 mb-3">Qarsildoq hotdog, Fri, Cola, Souse</p>
+                    <div class="flex items-center justify-between pt-3 border-t border-neutral-800/80">
+                        <span class="text-lg font-black text-red-500">60 000 so'm</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                                <button onclick="changeQty(this, -1)" class="px-2.5 py-1 text-neutral-300 font-bold">-</button>
+                                <span class="qty-val px-2 text-sm font-bold">1</span>
+                                <button onclick="changeQty(this, 1)" class="px-2.5 py-1 text-neutral-300 font-bold">+</button>
+                            </div>
+                            <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3.5 py-2 rounded-lg transition shadow-md shadow-red-600/20">
+                                Savatga
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 2. BURGERLAR -->
+        <section>
+            <h2 class="font-american text-3xl font-bold tracking-wide text-red-600 uppercase mb-4 border-l-4 border-red-600 pl-3">Burgerlar</h2>
+            <div class="space-y-3.5">
+                
+                <!-- Klassik -->
+                <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-4 shadow-md">
+                    <h3 class="text-lg font-bold mb-1">Klassik Smash burger</h3>
+                    <p class="text-xs text-neutral-400 mb-3">bulochka, united sous, tuzlangan bodring, mol go'shti qiyma, pishloq, pomidor</p>
+                    <div class="flex items-center justify-between pt-3 border-t border-neutral-800/80">
+                        <span class="text-lg font-black text-red-500">46 000 so'm</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                                <button onclick="changeQty(this, -1)" class="px-2.5 py-1 text-neutral-300 font-bold">-</button>
+                                <span class="qty-val px-2 text-sm font-bold">1</span>
+                                <button onclick="changeQty(this, 1)" class="px-2.5 py-1 text-neutral-300 font-bold">+</button>
+                            </div>
+                            <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3.5 py-2 rounded-lg transition shadow-md shadow-red-600/20">
+                                Savatga
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Qarsildoq piyozli -->
+                <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-4 shadow-md">
+                    <h3 class="text-lg font-bold mb-1">Qarsildoq piyozli Smash burger</h3>
+                    <p class="text-xs text-neutral-400 mb-3">bulochka, united sous, tuzlangan bodring, mol go'shti qiyma, pishloq, pomidor, qarsildoq piyoz</p>
+                    <div class="flex items-center justify-between pt-3 border-t border-neutral-800/80">
+                        <span class="text-lg font-black text-red-500">53 000 so'm</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                                <button onclick="changeQty(this, -1)" class="px-2.5 py-1 text-neutral-300 font-bold">-</button>
+                                <span class="qty-val px-2 text-sm font-bold">1</span>
+                                <button onclick="changeQty(this, 1)" class="px-2.5 py-1 text-neutral-300 font-bold">+</button>
+                            </div>
+                            <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3.5 py-2 rounded-lg transition shadow-md shadow-red-600/20">
+                                Savatga
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- United -->
+                <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-4 shadow-md">
+                    <h3 class="text-lg font-bold mb-1">United Smash burger</h3>
+                    <p class="text-xs text-neutral-400 mb-3">bulochka, united sous, tuzlangan bodring, mol go'shti qiyma, mol go'shtli bekon, pishloq, pomidor</p>
+                    <div class="flex items-center justify-between pt-3 border-t border-neutral-800/80">
+                        <span class="text-lg font-black text-red-500">59 000 so'm</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                                <button onclick="changeQty(this, -1)" class="px-2.5 py-1 text-neutral-300 font-bold">-</button>
+                                <span class="qty-val px-2 text-sm font-bold">1</span>
+                                <button onclick="changeQty(this, 1)" class="px-2.5 py-1 text-neutral-300 font-bold">+</button>
+                            </div>
+                            <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3.5 py-2 rounded-lg transition shadow-md shadow-red-600/20">
+                                Savatga
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 3. HOT-DOGLAR -->
+        <section>
+            <h2 class="font-american text-3xl font-bold tracking-wide text-red-600 uppercase mb-4 border-l-4 border-red-600 pl-3">Hot-doglar</h2>
+            <div class="space-y-3.5">
+                
+                <!-- Klassik Hot-dog -->
+                <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-4 shadow-md">
+                    <h3 class="text-lg font-bold mb-1">Klassik Hot-dog</h3>
+                    <p class="text-xs text-neutral-400 mb-3">bulochka, sosiska, aysberg, pomidor, bodring, united sous, ketchup</p>
+                    <div class="flex items-center justify-between pt-3 border-t border-neutral-800/80">
+                        <span class="text-lg font-black text-red-500">35 000 so'm</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                                <button onclick="changeQty(this, -1)" class="px-2.5 py-1 text-neutral-300 font-bold">-</button>
+                                <span class="qty-val px-2 text-sm font-bold">1</span>
+                                <button onclick="changeQty(this, 1)" class="px-2.5 py-1 text-neutral-300 font-bold">+</button>
+                            </div>
+                            <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3.5 py-2 rounded-lg transition shadow-md shadow-red-600/20">
+                                Savatga
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Qarsildoq piyozli Hot-dog -->
+                <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-4 shadow-md">
+                    <h3 class="text-lg font-bold mb-1">Qarsildoq piyozli Hot-dog</h3>
+                    <p class="text-xs text-neutral-400 mb-3">bulochka, sosiska, aysberg, pomidor, bodring, united sous, xot-dog uchun sous, krispi piyoz</p>
+                    <div class="flex items-center justify-between pt-3 border-t border-neutral-800/80">
+                        <span class="text-lg font-black text-red-500">35 000 so'm</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                                <button onclick="changeQty(this, -1)" class="px-2.5 py-1 text-neutral-300 font-bold">-</button>
+                                <span class="qty-val px-2 text-sm font-bold">1</span>
+                                <button onclick="changeQty(this, 1)" class="px-2.5 py-1 text-neutral-300 font-bold">+</button>
+                            </div>
+                            <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3.5 py-2 rounded-lg transition shadow-md shadow-red-600/20">
+                                Savatga
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- United Hot-dog -->
+                <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-4 shadow-md">
+                    <h3 class="text-lg font-bold mb-1">United Hot-dog</h3>
+                    <p class="text-xs text-neutral-400 mb-3">bulochka, sosiska, mayonez, tuzlangan bodring, qarsildoq piyoz, mol go'shtli bekon, united sous</p>
+                    <div class="flex items-center justify-between pt-3 border-t border-neutral-800/80">
+                        <span class="text-lg font-black text-red-500">43 000 so'm</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                                <button onclick="changeQty(this, -1)" class="px-2.5 py-1 text-neutral-300 font-bold">-</button>
+                                <span class="qty-val px-2 text-sm font-bold">1</span>
+                                <button onclick="changeQty(this, 1)" class="px-2.5 py-1 text-neutral-300 font-bold">+</button>
+                            </div>
+                            <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3.5 py-2 rounded-lg transition shadow-md shadow-red-600/20">
+                                Savatga
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Longer -->
+                <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-4 shadow-md">
+                    <h3 class="text-lg font-bold mb-1">Longer</h3>
+                    <p class="text-xs text-neutral-400 mb-3">bulochka, united sous, ketchup, tuzlangan bodring, yangi bodring, tovuqli stripslar, pomidor, aysberg salati</p>
+                    <div class="flex items-center justify-between pt-3 border-t border-neutral-800/80">
+                        <span class="text-lg font-black text-red-500">43 000 so'm</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                                <button onclick="changeQty(this, -1)" class="px-2.5 py-1 text-neutral-300 font-bold">-</button>
+                                <span class="qty-val px-2 text-sm font-bold">1</span>
+                                <button onclick="changeQty(this, 1)" class="px-2.5 py-1 text-neutral-300 font-bold">+</button>
+                            </div>
+                            <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3.5 py-2 rounded-lg transition shadow-md shadow-red-600/20">
+                                Savatga
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 4. LAVASHLAR -->
+        <section>
+            <h2 class="font-american text-3xl font-bold tracking-wide text-red-600 uppercase mb-4 border-l-4 border-red-600 pl-3">Lavashlar</h2>
+            <div class="space-y-3.5">
+                
+                <!-- Tovuqli lavash -->
+                <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-4 shadow-md">
+                    <h3 class="text-lg font-bold mb-1">Lavash (Tovuqli lavash)</h3>
+                    <p class="text-xs text-neutral-400 mb-3">lavash, tovuqli donar, pomidor, bodring, aysberg, oq sous, tomat sousi</p>
+                    <div class="flex items-center justify-between pt-3 border-t border-neutral-800/80">
+                        <span class="text-lg font-black text-red-500">39 000 so'm</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                                <button onclick="changeQty(this, -1)" class="px-2.5 py-1 text-neutral-300 font-bold">-</button>
+                                <span class="qty-val px-2 text-sm font-bold">1</span>
+                                <button onclick="changeQty(this, 1)" class="px-2.5 py-1 text-neutral-300 font-bold">+</button>
+                            </div>
+                            <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3.5 py-2 rounded-lg transition shadow-md shadow-red-600/20">
+                                Savatga
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mol go'shtli lavash -->
+                <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-4 shadow-md">
+                    <h3 class="text-lg font-bold mb-1">Lavash (Mol go'shtli lavash)</h3>
+                    <p class="text-xs text-neutral-400 mb-3">lavash, donar go'shti, pomidor, bodring, aysberg, oq sous, tomat sousi</p>
+                    <div class="flex items-center justify-between pt-3 border-t border-neutral-800/80">
+                        <span class="text-lg font-black text-red-500">43 000 so'm</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                                <button onclick="changeQty(this, -1)" class="px-2.5 py-1 text-neutral-300 font-bold">-</button>
+                                <span class="qty-val px-2 text-sm font-bold">1</span>
+                                <button onclick="changeQty(this, 1)" class="px-2.5 py-1 text-neutral-300 font-bold">+</button>
+                            </div>
+                            <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3.5 py-2 rounded-lg transition shadow-md shadow-red-600/20">
+                                Savatga
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Qo'shimchalar -->
+                <div class="bg-red-600/10 border border-red-600/30 rounded-xl p-3 flex justify-around text-xs font-semibold text-red-400">
+                    <span>🧀 +Pishloq: 3 000 so'm</span>
+                    <span>🌶️ +Xalapenyo: 3 000 so'm</span>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 5. SNEKLAR -->
+        <section>
+            <h2 class="font-american text-3xl font-bold tracking-wide text-red-600 uppercase mb-4 border-l-4 border-red-600 pl-3">Sneklar</h2>
+            <div class="space-y-3.5">
+                
+                <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-4 shadow-md">
+                    <h3 class="text-lg font-bold mb-1">Pishloqli toplar</h3>
+                    <p class="text-xs text-neutral-400 mb-3">X3 — 17 000 so'm | X5 — 23 000 so'm</p>
+                    <div class="flex items-center justify-between pt-3 border-t border-neutral-800/80">
+                        <span class="text-base font-black text-red-500">17 000 so'm</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                                <button onclick="changeQty(this, -1)" class="px-2.5 py-1 text-neutral-300 font-bold">-</button>
+                                <span class="qty-val px-2 text-sm font-bold">1</span>
+                                <button onclick="changeQty(this, 1)" class="px-2.5 py-1 text-neutral-300 font-bold">+</button>
+                            </div>
+                            <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3.5 py-2 rounded-lg transition">Savatga</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-4 shadow-md">
+                    <h3 class="text-lg font-bold mb-1">Strips</h3>
+                    <p class="text-xs text-neutral-400 mb-3">X3 — 24 000 | X7 — 48 000 | X12 — 78 000</p>
+                    <div class="flex items-center justify-between pt-3 border-t border-neutral-800/80">
+                        <span class="text-base font-black text-red-500">24 000 so'm</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                                <button onclick="changeQty(this, -1)" class="px-2.5 py-1 text-neutral-300 font-bold">-</button>
+                                <span class="qty-val px-2 text-sm font-bold">1</span>
+                                <button onclick="changeQty(this, 1)" class="px-2.5 py-1 text-neutral-300 font-bold">+</button>
+                            </div>
+                            <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3.5 py-2 rounded-lg transition">Savatga</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-4 shadow-md">
+                    <h3 class="text-lg font-bold mb-1">Qanotlar</h3>
+                    <p class="text-xs text-neutral-400 mb-3">X3 — 24 000 | X7 — 48 000 | X12 — 78 000</p>
+                    <div class="flex items-center justify-between pt-3 border-t border-neutral-800/80">
+                        <span class="text-base font-black text-red-500">24 000 so'm</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                                <button onclick="changeQty(this, -1)" class="px-2.5 py-1 text-neutral-300 font-bold">-</button>
+                                <span class="qty-val px-2 text-sm font-bold">1</span>
+                                <button onclick="changeQty(this, 1)" class="px-2.5 py-1 text-neutral-300 font-bold">+</button>
+                            </div>
+                            <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3.5 py-2 rounded-lg transition">Savatga</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-neutral-900 border border-neutral-800 rounded-2xl p-4 shadow-md">
+                    <h3 class="text-lg font-bold mb-1">Naggets</h3>
+                    <p class="text-xs text-neutral-400 mb-3">X3 — 17 000 | X5 — 22 000</p>
+                    <div class="flex items-center justify-between pt-3 border-t border-neutral-800/80">
+                        <span class="text-base font-black text-red-500">17 000 so'm</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                                <button onclick="changeQty(this, -1)" class="px-2.5 py-1 text-neutral-300 font-bold">-</button>
+                                <span class="qty-val px-2 text-sm font-bold">1</span>
+                                <button onclick="changeQty(this, 1)" class="px-2.5 py-1 text-neutral-300 font-bold">+</button>
+                            </div>
+                            <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3.5 py-2 rounded-lg transition">Savatga</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Qolgan sneklar qisqa kartalarda -->
+                <div class="bg-neutral-900 border border-neutral-800 rounded-xl p-3.5 flex items-center justify-between">
+                    <div>
+                        <h4 class="font-bold text-sm">Kartoshkali koptokchalar</h4>
+                        <span class="text-sm font-black text-red-500">15 000 so'm</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                            <button onclick="changeQty(this, -1)" class="px-2 py-0.5 text-xs font-bold">-</button>
+                            <span class="qty-val px-1.5 text-xs font-bold">1</span>
+                            <button onclick="changeQty(this, 1)" class="px-2 py-0.5 text-xs font-bold">+</button>
+                        </div>
+                        <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg">Savatga</button>
+                    </div>
+                </div>
+
+                <div class="bg-neutral-900 border border-neutral-800 rounded-xl p-3.5 flex items-center justify-between">
+                    <div>
+                        <h4 class="font-bold text-sm">Pishloqli yostiqchalar</h4>
+                        <span class="text-sm font-black text-red-500">28 000 so'm</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                            <button onclick="changeQty(this, -1)" class="px-2 py-0.5 text-xs font-bold">-</button>
+                            <span class="qty-val px-1.5 text-xs font-bold">1</span>
+                            <button onclick="changeQty(this, 1)" class="px-2 py-0.5 text-xs font-bold">+</button>
+                        </div>
+                        <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg">Savatga</button>
+                    </div>
+                </div>
+
+                <div class="bg-neutral-900 border border-neutral-800 rounded-xl p-3.5 flex items-center justify-between">
+                    <div>
+                        <h4 class="font-bold text-sm">Piyozli uzuklar</h4>
+                        <span class="text-sm font-black text-red-500">20 000 so'm</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                            <button onclick="changeQty(this, -1)" class="px-2 py-0.5 text-xs font-bold">-</button>
+                            <span class="qty-val px-1.5 text-xs font-bold">1</span>
+                            <button onclick="changeQty(this, 1)" class="px-2 py-0.5 text-xs font-bold">+</button>
+                        </div>
+                        <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg">Savatga</button>
+                    </div>
+                </div>
+
+                <div class="bg-neutral-900 border border-neutral-800 rounded-xl p-3.5 flex items-center justify-between">
+                    <div>
+                        <h4 class="font-bold text-sm">Jaydari / Fri kartoshka</h4>
+                        <span class="text-sm font-black text-red-500">15 000 so'm</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                            <button onclick="changeQty(this, -1)" class="px-2 py-0.5 text-xs font-bold">-</button>
+                            <span class="qty-val px-1.5 text-xs font-bold">1</span>
+                            <button onclick="changeQty(this, 1)" class="px-2 py-0.5 text-xs font-bold">+</button>
+                        </div>
+                        <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg">Savatga</button>
+                    </div>
+                </div>
+
+                <div class="bg-neutral-900 border border-neutral-800 rounded-xl p-3.5 flex items-center justify-between">
+                    <div>
+                        <h4 class="font-bold text-sm">Kartoshka vafli</h4>
+                        <span class="text-sm font-black text-red-500">20 000 so'm</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                            <button onclick="changeQty(this, -1)" class="px-2 py-0.5 text-xs font-bold">-</button>
+                            <span class="qty-val px-1.5 text-xs font-bold">1</span>
+                            <button onclick="changeQty(this, 1)" class="px-2 py-0.5 text-xs font-bold">+</button>
+                        </div>
+                        <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg">Savatga</button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 6. ICHIMLIKLAR -->
+        <section>
+            <h2 class="font-american text-3xl font-bold tracking-wide text-red-600 uppercase mb-4 border-l-4 border-red-600 pl-3">Ichimliklar</h2>
+            <div class="space-y-2.5">
+                
+                <div class="bg-neutral-900 border border-neutral-800 rounded-xl p-3 flex items-center justify-between">
+                    <div>
+                        <p class="font-semibold text-sm">Coca cola / Zero / Fanta / Sprite / Fuse tea (0,5l)</p>
+                        <span class="font-black text-red-500 text-sm">12 000 so'm</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                            <button onclick="changeQty(this, -1)" class="px-2 py-0.5 text-xs font-bold">-</button>
+                            <span class="qty-val px-1.5 text-xs font-bold">1</span>
+                            <button onclick="changeQty(this, 1)" class="px-2 py-0.5 text-xs font-bold">+</button>
+                        </div>
+                        <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg">Savatga</button>
+                    </div>
+                </div>
+
+                <div class="bg-neutral-900 border border-neutral-800 rounded-xl p-3 flex items-center justify-between">
+                    <div>
+                        <p class="font-semibold text-sm">Coca cola razliv</p>
+                        <span class="font-black text-red-500 text-sm">11 000 so'm</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                            <button onclick="changeQty(this, -1)" class="px-2 py-0.5 text-xs font-bold">-</button>
+                            <span class="qty-val px-1.5 text-xs font-bold">1</span>
+                            <button onclick="changeQty(this, 1)" class="px-2 py-0.5 text-xs font-bold">+</button>
+                        </div>
+                        <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg">Savatga</button>
+                    </div>
+                </div>
+
+                <div class="bg-neutral-900 border border-neutral-800 rounded-xl p-3 flex items-center justify-between">
+                    <div>
+                        <p class="font-semibold text-sm">Bon aqua</p>
+                        <span class="font-black text-red-500 text-sm">6 000 so'm</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                            <button onclick="changeQty(this, -1)" class="px-2 py-0.5 text-xs font-bold">-</button>
+                            <span class="qty-val px-1.5 text-xs font-bold">1</span>
+                            <button onclick="changeQty(this, 1)" class="px-2 py-0.5 text-xs font-bold">+</button>
+                        </div>
+                        <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg">Savatga</button>
+                    </div>
+                </div>
+
+                <div class="bg-neutral-900 border border-neutral-800 rounded-xl p-3 flex items-center justify-between">
+                    <div>
+                        <p class="font-semibold text-sm">Moxito / Malina / Mango / Shaftoli / Tarxun</p>
+                        <span class="font-black text-red-500 text-sm">20 000 so'm</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="flex items-center bg-neutral-800 rounded-lg border border-neutral-700">
+                            <button onclick="changeQty(this, -1)" class="px-2 py-0.5 text-xs font-bold">-</button>
+                            <span class="qty-val px-1.5 text-xs font-bold">1</span>
+                            <button onclick="changeQty(this, 1)" class="px-2 py-0.5 text-xs font-bold">+</button>
+                        </div>
+                        <button onclick="addToCartVisual(this)" class="bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg">Savatga</button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- shotdan bol -->
+
+    <!-- Pastki Navbar (Static, iconkali) -->
+    <nav class="fixed bottom-0 left-0 right-0 z-50 bg-neutral-900/95 backdrop-blur-md border-t border-neutral-800 px-6 py-2.5 flex items-center justify-around max-w-md mx-auto">
+        <!-- Asosiy (Active) -->
+        <div class="flex flex-col items-center text-red-500 cursor-pointer">
+            <svg class="w-6 h-6 mb-0.5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            </svg>
+            <span class="text-[10px] font-bold">Menyu</span>
+        </div>
+
+        <!-- Savat (Static) -->
+        <div class="flex flex-col items-center text-neutral-500 cursor-pointer">
+            <svg class="w-6 h-6 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            <span class="text-[10px] font-medium">Savat</span>
+        </div>
+
+        <!-- Buyurtmalar (Static) -->
+        <div class="flex flex-col items-center text-neutral-500 cursor-pointer">
+            <svg class="w-6 h-6 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+            <span class="text-[10px] font-medium">Buyurtmalar</span>
+        </div>
+
+        <!-- Profil (Static) -->
+        <div class="flex flex-col items-center text-neutral-500 cursor-pointer">
+            <svg class="w-6 h-6 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+            </svg>
+            <span class="text-[10px] font-medium">Profil</span>
+        </div>
+    </nav>
+
+    <!-- Oddiy vizual skript (faqat tugma bosilganda "Savatga qo'shildi" va +/- ko'rsatish uchun) -->
+    <script>
+        function changeQty(btn, delta) {
+            const span = btn.parentElement.querySelector('.qty-val');
+            let val = parseInt(span.innerText) + delta;
+            if (val < 1) val = 1;
+            span.innerText = val;
+        }
+
+        function addToCartVisual(btn) {
+            const originalText = btn.innerText;
+            btn.innerText = "Qo'shildi ✓";
+            btn.classList.remove('bg-red-600');
+            btn.classList.add('bg-emerald-600');
+            
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.classList.remove('bg-emerald-600');
+                btn.classList.add('bg-red-600');
+            }, 1200);
+        }
+    </script>
+</body>
+</html>
