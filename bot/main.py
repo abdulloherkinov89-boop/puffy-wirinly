@@ -1,5 +1,6 @@
 import asyncio
 import os
+import re
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -45,12 +46,6 @@ async def start_handler(message: Message):
         keyboard=[
             [
                 KeyboardButton(
-                    text="📱 Telefon raqamni yuborish",
-                    request_contact=True,
-                )
-            ],
-            [
-                KeyboardButton(
                     text="🚀 Mini Appni ochish",
                     web_app=WebAppInfo(url=WEB_APP_URL)
                 )
@@ -61,9 +56,32 @@ async def start_handler(message: Message):
 
     await message.answer(
         f"Assalomu alaykum, {message.from_user.full_name}! 👋\n\n"
-        "Mini Appimizga xush kelibsiz!",
+        "Mini Appimizga xush kelibsiz! Telefon raqamingizni shu chatga yozsangiz,"
+        " avtomatik saqlaymiz.",
         reply_markup=keyboard
     )
+
+
+@dp.message(F.text)
+async def phone_text_handler(message: Message):
+    user = message.from_user
+    text = (message.text or "").strip()
+    if user is None or not re.fullmatch(r"\+?[\d\s().-]{9,20}", text):
+        return
+
+    digits = re.sub(r"\D", "", text)
+    if not 9 <= len(digits) <= 15:
+        return
+
+    phone_number = f"+{digits}" if text.startswith("+") else digits
+    save_user(
+        tg_id=user.id,
+        full_name=user.full_name,
+        first_name=user.first_name,
+        username=user.username,
+        phone_number=phone_number,
+    )
+    await message.answer("Telefon raqamingiz avtomatik saqlandi. Rahmat!")
 
 
 @dp.message(F.contact)
