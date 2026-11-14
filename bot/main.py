@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from aiogram import Bot, Dispatcher
+from aiogram import Bot, Dispatcher, F
 from aiogram.filters import CommandStart
 from aiogram.types import (
     Message,
@@ -12,6 +12,7 @@ from aiogram.types import (
     KeyboardButton,
     WebAppInfo
 )
+from backend.database import initialize_database, save_user
 
 WEB_APP_URL = os.getenv(
     "WEB_APP_URL",
@@ -28,9 +29,26 @@ dp = Dispatcher()
 
 @dp.message(CommandStart())
 async def start_handler(message: Message):
+    user = message.from_user
+    if user is None:
+        return
+
+    initialize_database()
+    save_user(
+        tg_id=user.id,
+        full_name=user.full_name,
+        first_name=user.first_name,
+        username=user.username,
+    )
 
     keyboard = ReplyKeyboardMarkup(
         keyboard=[
+            [
+                KeyboardButton(
+                    text="📱 Telefon raqamni yuborish",
+                    request_contact=True,
+                )
+            ],
             [
                 KeyboardButton(
                     text="🚀 Mini Appni ochish",
@@ -48,6 +66,27 @@ async def start_handler(message: Message):
     )
 
 
+@dp.message(F.contact)
+async def contact_handler(message: Message):
+    user = message.from_user
+    contact = message.contact
+    if user is None or contact is None:
+        return
+
+    if contact.user_id != user.id:
+        await message.answer("Iltimos, o'zingizning telefon raqamingizni yuboring.")
+        return
+
+    save_user(
+        tg_id=user.id,
+        full_name=user.full_name,
+        first_name=user.first_name,
+        username=user.username,
+        phone_number=contact.phone_number,
+    )
+    await message.answer("Telefon raqamingiz saqlandi. Rahmat!")
+
+
 def create_bot() -> Bot:
     token = os.getenv("BOT_TOKEN")
     if not token:
@@ -60,6 +99,7 @@ async def run_bot(bot: Bot) -> None:
 
 
 async def main() -> None:
+    initialize_database()
     bot = create_bot()
     try:
         await run_bot(bot)
