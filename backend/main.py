@@ -1,4 +1,5 @@
 import asyncio
+import os
 from contextlib import asynccontextmanager, suppress
 from pathlib import Path
 
@@ -38,3 +39,13 @@ app.mount("/frontend", StaticFiles(directory=FRONTEND_DIR), name="frontend")
 @app.get("/")
 async def home():
     return FileResponse(FRONTEND_HOME)
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(
+        app,
+        host="0.0.0.0",
+        port=int(os.getenv("PORT", "8000")),
+    )

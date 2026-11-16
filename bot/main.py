@@ -7,13 +7,10 @@ load_dotenv()
 
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import CommandStart
-from aiogram.types import (
-    Message,
-    ReplyKeyboardMarkup,
-    KeyboardButton,
-    WebAppInfo
-)
+from aiogram.types import Message
 from backend.database import initialize_database, save_user
+from bot.keyboard.default_key import create_default_keyboard
+from bot.keyboard.inline import create_inline_keyboard
 
 WEB_APP_URL = os.getenv(
     "WEB_APP_URL",
@@ -42,23 +39,11 @@ async def start_handler(message: Message):
         username=user.username,
     )
 
-    keyboard = ReplyKeyboardMarkup(
-        keyboard=[
-            [
-                KeyboardButton(
-                    text="🚀 Mini Appni ochish",
-                    web_app=WebAppInfo(url=WEB_APP_URL)
-                )
-            ]
-        ],
-        resize_keyboard=True
-    )
-
     await message.answer(
         f"Assalomu alaykum, {message.from_user.full_name}! 👋\n\n"
         "Mini Appimizga xush kelibsiz! Telefon raqamingizni shu chatga yozsangiz,"
         " avtomatik saqlaymiz.",
-        reply_markup=keyboard
+        reply_markup=create_inline_keyboard(WEB_APP_URL),
     )
 
 
@@ -81,7 +66,10 @@ async def phone_text_handler(message: Message):
         username=user.username,
         phone_number=phone_number,
     )
-    await message.answer("Telefon raqamingiz avtomatik saqlandi. Rahmat!")
+    await message.answer(
+        "Telefon raqamingiz avtomatik saqlandi. Rahmat!",
+        reply_markup=create_default_keyboard(),
+    )
 
 
 @dp.message(F.contact)
@@ -102,7 +90,10 @@ async def contact_handler(message: Message):
         username=user.username,
         phone_number=contact.phone_number,
     )
-    await message.answer("Telefon raqamingiz saqlandi. Rahmat!")
+    await message.answer(
+        "Telefon raqamingiz saqlandi. Rahmat!",
+        reply_markup=create_default_keyboard(),
+    )
 
 
 def create_bot() -> Bot:
