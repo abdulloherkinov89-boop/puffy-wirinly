@@ -9,7 +9,11 @@ from aiogram import Bot, Dispatcher, F
 from aiogram.filters import CommandStart
 from aiogram.types import CallbackQuery, Message
 from backend.database import initialize_database, save_user
-from bot.admin.a_key_inline import admin_home_keyboard, admin_products_keyboard
+from bot.admin.a_key_inline import (
+    admin_analysis_keyboard,
+    admin_home_keyboard,
+    admin_products_keyboard,
+)
 from bot.keyboard.default_key import create_default_keyboard
 from bot.keyboard.inline import create_inline_keyboard
 
@@ -66,8 +70,13 @@ async def admin_callback_handler(callback: CallbackQuery):
     action = (callback.data or "").removeprefix("admin:")
     if action == "products":
         await callback.message.edit_text(
-            "Mahsulotlar va kategoriyalar boshqaruvi:",
+            "Mahsulotlar bo'limi:",
             reply_markup=admin_products_keyboard(),
+        )
+    elif action == "analysis":
+        await callback.message.edit_text(
+            "Tahlil bo'limi:",
+            reply_markup=admin_analysis_keyboard(),
         )
     elif action == "home":
         await callback.message.edit_text(
@@ -77,19 +86,23 @@ async def admin_callback_handler(callback: CallbackQuery):
     else:
         action_labels = {
             "add_category": "Kategoriya qo'shish",
-            "edit_category": "Kategoriyani tahrirlash",
             "add_product": "Mahsulot qo'shish",
-            "edit_product": "Mahsulotni tahrirlash",
-            "list_products": "Mahsulotlar ro'yxati",
+            "category_analysis": "Kategoriya tahlili",
+            "product_analysis": "Mahsulot tahlili",
         }
         label = action_labels.get(action)
         if label is None:
             await callback.answer("Noma'lum tugma.", show_alert=True)
             return
 
+        keyboard = (
+            admin_analysis_keyboard()
+            if action.endswith("_analysis")
+            else admin_products_keyboard()
+        )
         await callback.message.edit_text(
             f"{label}\n\nBu tugma hozircha statik. Backend funksiyasi keyin qo'shiladi.",
-            reply_markup=admin_products_keyboard(),
+            reply_markup=keyboard,
         )
 
     await callback.answer()
