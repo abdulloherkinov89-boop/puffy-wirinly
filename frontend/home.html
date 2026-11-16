@@ -1,222 +1,824 @@
 <!DOCTYPE html>
 <html lang="uz">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>United Burger – Menyu</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Inter:wght@400;500;600;700&display=swap">
-<style>
-:root{--bg:#fff;--tile:#f4f4f5;--ink:#18181b;--mut:#71717a;--line:#ececee;--red:#d92027;--red2:#b81a20;color-scheme:light}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{scroll-padding-top:calc(112px + env(safe-area-inset-top,0px))}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;max-width:560px;margin-inline:auto;padding-bottom:calc(112px + env(safe-area-inset-bottom,0px));padding-top:env(safe-area-inset-top,0px)}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:20}
-a{color:inherit;text-decoration:none}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>United Burger – Menyu</title>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Inter:wght@400;500;600;700&display=swap">
+  <style>
+    :root {
+      --bg: #fff;
+      --tile: #f4f4f5;
+      --ink: #18181b;
+      --mut: #71717a;
+      --line: #ececee;
+      --red: #d92027;
+      --red2: #b81a20;
+      color-scheme: light
+    }
 
-/* sticky logo */
-header{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;height:52px;background:var(--bg);display:flex;justify-content:center;align-items:center;border-bottom:1px solid var(--line)}
-.logo{display:flex;align-items:center;gap:8px;color:var(--red);font-family:Oswald,sans-serif;font-weight:600;font-size:26px;transform:translateY(4px)}
-.logo svg{width:44px;height:32px}
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent
+    }
 
-/* categories */
-.cats{position:sticky;top:calc(52px + env(safe-area-inset-top,0px));z-index:9;background:var(--bg);display:flex;gap:8px;overflow-x:auto;padding:10px 14px;scrollbar-width:none}
-.cats::-webkit-scrollbar{display:none}
-.cat{flex:none;background:var(--tile);font-weight:600;font-size:13px;padding:8px 14px;border-radius:20px}
-.cat.on{background:var(--ink);color:#fff}
-h2{font-family:Oswald,sans-serif;font-weight:600;font-size:24px;margin:18px 14px 10px}
+    html {
+      scroll-padding-top: calc(112px + env(safe-area-inset-top, 0px))
+    }
 
-/* 2-column grid */
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 12px;padding:0 14px}
-.card{cursor:pointer}
-.pic{aspect-ratio:1/1;background:var(--tile);border-radius:16px;display:grid;place-items:center;font-size:54px;position:relative;overflow:hidden}
-.pic img,.big img{width:100%;height:100%;object-fit:cover}
-.badge{position:absolute;left:8px;top:8px;background:var(--red);color:#fff;font-weight:700;font-size:11px;padding:3px 7px;border-radius:8px}
-.plus{position:absolute;right:8px;bottom:8px;width:36px;height:36px;border-radius:18px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.18);display:grid;place-items:center;font-size:22px;font-weight:500;line-height:1}
-.price{margin-top:8px;font-weight:700;font-size:16px}
-.price s{color:var(--mut);font-weight:500;font-size:13px;margin-left:6px}
-.name{font-weight:600;font-size:14px;margin-top:2px}
-.desc{color:var(--mut);font-size:12px;line-height:1.35;margin-top:2px}
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, system-ui, sans-serif;
+      max-width: 560px;
+      margin-inline: auto;
+      padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px));
+      padding-top: env(safe-area-inset-top, 0px)
+    }
 
-/* product sheet (Yandex-style) */
-.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .2s;z-index:30}
-.ov.on{opacity:1;pointer-events:auto}
-.sheet{position:fixed;left:0;right:0;bottom:0;margin-inline:auto;max-width:560px;max-height:92vh;background:#fff;border-radius:22px 22px 0 0;z-index:31;display:flex;flex-direction:column;transform:translateY(105%);transition:transform .25s ease;overflow:hidden}
-.sheet.on{transform:none}
-.x{position:absolute;top:12px;right:12px;z-index:2;width:34px;height:34px;border:0;border-radius:17px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.2);font-size:15px;cursor:pointer}
-.big{aspect-ratio:4/3;background:var(--tile);display:grid;place-items:center;font-size:120px;overflow:hidden}
-.sheet .body{padding:16px 16px 8px;overflow-y:auto}
-.mname{font-family:Oswald,sans-serif;font-weight:600;font-size:24px}
-.mprice{margin-top:4px;font-weight:700;font-size:18px}
-.mprice s{color:var(--mut);font-weight:500;font-size:14px;margin-left:8px}
-.mdesc{color:var(--mut);font-size:14px;line-height:1.5;margin:10px 0 0}
-.bar{display:flex;gap:10px;padding:12px 16px calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
-.step{display:flex;align-items:center;background:var(--tile);border-radius:14px}
-.step button{all:unset;cursor:pointer;width:42px;height:48px;text-align:center;font-size:20px;font-weight:600}
-.step span{min-width:22px;text-align:center;font-weight:700}
-.step.sm button{height:36px;width:34px}
-.go{flex:1;border:0;background:var(--red);color:#fff;font:700 15px Inter,sans-serif;border-radius:14px;cursor:pointer}
-.go:active{background:var(--red2)}
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0 0 auto;
+      height: env(safe-area-inset-top, 0px);
+      background: var(--bg);
+      z-index: 20
+    }
 
-/* bottom navbar (links to separate files) */
-nav{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:15;width:min(520px,calc(100% - 32px));background:rgba(255,255,255,.88);border:1px solid rgba(255,255,255,.92);border-radius:28px;padding:6px;box-shadow:0 12px 32px rgba(24,24,27,.16),0 2px 8px rgba(24,24,27,.08);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
-nav div{display:flex;width:100%;margin-inline:auto}
-nav a{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:64px;padding:6px 2px;color:var(--mut);font-weight:600;font-size:11px;border-radius:22px;transition:background .18s ease,color .18s ease}
-nav a.on{background:#f7edce;color:#8b6b16}
-nav svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-nav a.on svg.f{fill:currentColor}
+    a {
+      color: inherit;
+      text-decoration: none
+    }
 
-/* cart */
-.row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line)}
-.row .t{font-size:30px;background:var(--tile);width:56px;height:56px;border-radius:12px;display:grid;place-items:center}
-.row .i{flex:1}.row b{font-size:14px}.row small{display:block;color:var(--mut);margin-top:3px;font-size:13px}
-.total{display:flex;justify-content:space-between;font-weight:700;font-size:17px;padding:16px 14px}
-.order{display:block;width:calc(100% - 28px);margin:0 14px;border:0;background:var(--red);color:#fff;font:700 16px Inter,sans-serif;padding:14px;border-radius:14px}
+    /* sticky logo */
+    header {
+      position: sticky;
+      top: env(safe-area-inset-top, 0px);
+      z-index: 10;
+      height: 52px;
+      background: var(--bg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom: 1px solid var(--line)
+    }
 
-/* orders */
-.olist{display:grid;gap:12px;padding:0 14px}
-.ocard{border:1px solid var(--line);border-radius:16px;padding:14px}
-.otop{display:flex;justify-content:space-between;align-items:center}
-.st{font-size:12px;font-weight:600;padding:4px 10px;border-radius:10px}
-.st.wait{background:#fff4e0;color:#a15c00}.st.ok{background:#e6f6ec;color:#16803c}
-.odate{color:var(--mut);font-size:12px;margin-top:4px}
-.oitems{font-size:14px;margin:10px 0}
-.osum{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:10px}
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--red);
+      font-family: Oswald, sans-serif;
+      font-weight: 600;
+      font-size: 26px;
+      transform: translateY(4px)
+    }
 
-/* profile */
-.me{display:flex;align-items:center;gap:14px;padding:4px 14px 18px}
-.av{width:60px;height:60px;border-radius:30px;background:var(--red);color:#fff;display:grid;place-items:center;font:600 26px Oswald,sans-serif}
-.me small{display:block;color:var(--mut);margin-top:3px}
-.lst{margin:0 14px;border:1px solid var(--line);border-radius:16px}
-.li{display:flex;justify-content:space-between;padding:15px 14px;border-bottom:1px solid var(--line);font-weight:600;font-size:15px}
-.li:last-child{border-bottom:0}
-.li small{color:var(--mut);font-weight:500}
-</style>
+    .logo svg {
+      width: 44px;
+      height: 32px
+    }
+
+    /* categories */
+    .cats {
+      position: sticky;
+      top: calc(52px + env(safe-area-inset-top, 0px));
+      z-index: 9;
+      background: var(--bg);
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px 14px;
+      scrollbar-width: none
+    }
+
+    .cats::-webkit-scrollbar {
+      display: none
+    }
+
+    .cat {
+      flex: none;
+      background: var(--tile);
+      font-weight: 600;
+      font-size: 13px;
+      padding: 8px 14px;
+      border-radius: 20px
+    }
+
+    .cat.on {
+      background: var(--ink);
+      color: #fff
+    }
+
+    h2 {
+      font-family: Oswald, sans-serif;
+      font-weight: 600;
+      font-size: 24px;
+      margin: 18px 14px 10px
+    }
+
+    /* 2-column grid */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 12px;
+      padding: 0 14px
+    }
+
+    .card {
+      cursor: pointer
+    }
+
+    .pic {
+      aspect-ratio: 1/1;
+      background: var(--tile);
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-size: 54px;
+      position: relative;
+      overflow: hidden
+    }
+
+    .pic img,
+    .big img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+
+    .badge {
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      background: var(--red);
+      color: #fff;
+      font-weight: 700;
+      font-size: 11px;
+      padding: 3px 7px;
+      border-radius: 8px
+    }
+
+    .plus {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      width: 36px;
+      height: 36px;
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .18);
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 1
+    }
+
+    .price {
+      margin-top: 8px;
+      font-weight: 700;
+      font-size: 16px
+    }
+
+    .price s {
+      color: var(--mut);
+      font-weight: 500;
+      font-size: 13px;
+      margin-left: 6px
+    }
+
+    .name {
+      font-weight: 600;
+      font-size: 14px;
+      margin-top: 2px
+    }
+
+    .desc {
+      color: var(--mut);
+      font-size: 12px;
+      line-height: 1.35;
+      margin-top: 2px
+    }
+
+    /* product sheet (Yandex-style) */
+    .ov {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .45);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s;
+      z-index: 30
+    }
+
+    .ov.on {
+      opacity: 1;
+      pointer-events: auto
+    }
+
+    .sheet {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin-inline: auto;
+      max-width: 560px;
+      max-height: 92vh;
+      background: #fff;
+      border-radius: 22px 22px 0 0;
+      z-index: 31;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(105%);
+      transition: transform .25s ease;
+      overflow: hidden
+    }
+
+    .sheet.on {
+      transform: none
+    }
+
+    .x {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 2;
+      width: 34px;
+      height: 34px;
+      border: 0;
+      border-radius: 17px;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .2);
+      font-size: 15px;
+      cursor: pointer
+    }
+
+    .big {
+      aspect-ratio: 4/3;
+      background: var(--tile);
+      display: grid;
+      place-items: center;
+      font-size: 120px;
+      overflow: hidden
+    }
+
+    .sheet .body {
+      padding: 16px 16px 8px;
+      overflow-y: auto
+    }
+
+    .mname {
+      font-family: Oswald, sans-serif;
+      font-weight: 600;
+      font-size: 24px
+    }
+
+    .mprice {
+      margin-top: 4px;
+      font-weight: 700;
+      font-size: 18px
+    }
+
+    .mprice s {
+      color: var(--mut);
+      font-weight: 500;
+      font-size: 14px;
+      margin-left: 8px
+    }
+
+    .mdesc {
+      color: var(--mut);
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 10px 0 0
+    }
+
+    .bar {
+      display: flex;
+      gap: 10px;
+      padding: 12px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+      border-top: 1px solid var(--line)
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      background: var(--tile);
+      border-radius: 14px
+    }
+
+    .step button {
+      all: unset;
+      cursor: pointer;
+      width: 42px;
+      height: 48px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: 600
+    }
+
+    .step span {
+      min-width: 22px;
+      text-align: center;
+      font-weight: 700
+    }
+
+    .step.sm button {
+      height: 36px;
+      width: 34px
+    }
+
+    .go {
+      flex: 1;
+      border: 0;
+      background: var(--red);
+      color: #fff;
+      font: 700 15px Inter, sans-serif;
+      border-radius: 14px;
+      cursor: pointer
+    }
+
+    .go:active {
+      background: var(--red2)
+    }
+
+    /* bottom navbar (links to separate files) */
+    nav {
+      position: fixed;
+      left: 50%;
+      bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+      transform: translateX(-50%);
+      z-index: 15;
+      width: min(520px, calc(100% - 32px));
+      background: rgba(255, 255, 255, .88);
+      border: 1px solid rgba(255, 255, 255, .92);
+      border-radius: 28px;
+      padding: 6px;
+      box-shadow: 0 12px 32px rgba(24, 24, 27, .16), 0 2px 8px rgba(24, 24, 27, .08);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px)
+    }
+
+    nav div {
+      display: flex;
+      width: 100%;
+      margin-inline: auto
+    }
+
+    nav a {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      min-height: 64px;
+      padding: 6px 2px;
+      color: var(--mut);
+      font-weight: 600;
+      font-size: 11px;
+      border-radius: 22px;
+      transition: background .18s ease, color .18s ease
+    }
+
+    nav a.on {
+      background: #f7edce;
+      color: #8b6b16
+    }
+
+    nav svg {
+      width: 26px;
+      height: 26px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    nav a.on svg.f {
+      fill: currentColor
+    }
+
+    /* cart */
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line)
+    }
+
+    .row .t {
+      font-size: 30px;
+      background: var(--tile);
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center
+    }
+
+    .row .i {
+      flex: 1
+    }
+
+    .row b {
+      font-size: 14px
+    }
+
+    .row small {
+      display: block;
+      color: var(--mut);
+      margin-top: 3px;
+      font-size: 13px
+    }
+
+    .total {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+      font-size: 17px;
+      padding: 16px 14px
+    }
+
+    .order {
+      display: block;
+      width: calc(100% - 28px);
+      margin: 0 14px;
+      border: 0;
+      background: var(--red);
+      color: #fff;
+      font: 700 16px Inter, sans-serif;
+      padding: 14px;
+      border-radius: 14px
+    }
+
+    /* orders */
+    .olist {
+      display: grid;
+      gap: 12px;
+      padding: 0 14px
+    }
+
+    .ocard {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px
+    }
+
+    .otop {
+      display: flex;
+      justify-content: space-between;
+      align-items: center
+    }
+
+    .st {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 10px
+    }
+
+    .st.wait {
+      background: #fff4e0;
+      color: #a15c00
+    }
+
+    .st.ok {
+      background: #e6f6ec;
+      color: #16803c
+    }
+
+    .odate {
+      color: var(--mut);
+      font-size: 12px;
+      margin-top: 4px
+    }
+
+    .oitems {
+      font-size: 14px;
+      margin: 10px 0
+    }
+
+    .osum {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid var(--line);
+      padding-top: 10px
+    }
+
+    /* profile */
+    .me {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 4px 14px 18px
+    }
+
+    .av {
+      width: 60px;
+      height: 60px;
+      border-radius: 30px;
+      background: var(--red);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font: 600 26px Oswald, sans-serif
+    }
+
+    .me small {
+      display: block;
+      color: var(--mut);
+      margin-top: 3px
+    }
+
+    .lst {
+      margin: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 16px
+    }
+
+    .li {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 14px;
+      border-bottom: 1px solid var(--line);
+      font-weight: 600;
+      font-size: 15px
+    }
+
+    .li:last-child {
+      border-bottom: 0
+    }
+
+    .li small {
+      color: var(--mut);
+      font-weight: 500
+    }
+  </style>
 </head>
+
 <body>
-<header><a class="logo" href="/frontend/home.html" aria-label="United">United
-<svg viewBox="0 0 46 34" fill="currentColor" aria-hidden="true"><path d="M4 13C4 5 12 1 23 1s19 4 19 12z"/><rect x="2" y="16" width="42" height="4.5" rx="2.25"/><rect x="4" y="22.5" width="38" height="4.5" rx="2.25"/><path d="M4 29h38v1a3.5 3.5 0 0 1-3.5 3.5h-31A3.5 3.5 0 0 1 4 30z"/></svg></a></header>
-<div class="cats"><a class="cat on" href="#c0">Kombo</a><a class="cat" href="#c1">Burgerlar</a><a class="cat" href="#c2">Hotdoglar</a><a class="cat" href="#c3">Lavashlar</a><a class="cat" href="#c4">Sneklar</a><a class="cat" href="#c5">Ichimliklar</a></div>
-<main>
-<h2 id="c0">Kombo</h2><div class="grid">
-<div class="card" data-n="KOMBO 1" data-d="Qarsildoq Smash burger, Fri, Cola, Sous" data-p="78 000 so'm" data-o="84 000 so'm" data-e="🍔" data-img="">
-<div class="pic"><span class="badge">-7%</span>🍔<span class="plus">+</span></div>
-<div class="price">78 000 so'm<s>84 000 so'm</s></div><div class="name">KOMBO 1</div><div class="desc">Qarsildoq Smash burger, Fri, Cola, Sous</div></div>
-<div class="card" data-n="KOMBO 2" data-d="Klassik Smash Burger, Fri, Cola, Sous" data-p="71 000 so'm" data-o="77 000 so'm" data-e="🍟" data-img="">
-<div class="pic"><span class="badge">-8%</span>🍟<span class="plus">+</span></div>
-<div class="price">71 000 so'm<s>77 000 so'm</s></div><div class="name">KOMBO 2</div><div class="desc">Klassik Smash Burger, Fri, Cola, Sous</div></div>
-<div class="card" data-n="KOMBO 3" data-d="Tovuqli Burger, Fri, Cola, Souse" data-p="60 000 so'm" data-o="66 000 so'm" data-e="🍗" data-img="">
-<div class="pic"><span class="badge">-9%</span>🍗<span class="plus">+</span></div>
-<div class="price">60 000 so'm<s>66 000 so'm</s></div><div class="name">KOMBO 3</div><div class="desc">Tovuqli Burger, Fri, Cola, Souse</div></div>
-<div class="card" data-n="KOMBO 4" data-d="Double Smash, Fri, Cola, Sous" data-p="92 000 so'm" data-o="99 000 so'm" data-e="🥤" data-img="">
-<div class="pic"><span class="badge">-7%</span>🥤<span class="plus">+</span></div>
-<div class="price">92 000 so'm<s>99 000 so'm</s></div><div class="name">KOMBO 4</div><div class="desc">Double Smash, Fri, Cola, Sous</div></div>
-</div>
-<h2 id="c1">Burgerlar</h2><div class="grid">
-<div class="card" data-n="Klassik Smash" data-d="Mol go'shti, pishloq, pomidor, sous" data-p="42 000 so'm" data-o="" data-e="🍔" data-img="">
-<div class="pic">🍔<span class="plus">+</span></div>
-<div class="price">42 000 so'm</div><div class="name">Klassik Smash</div><div class="desc">Mol go'shti, pishloq, pomidor, sous</div></div>
-<div class="card" data-n="Qarsildoq Smash" data-d="Mol go'shti, qarsildoq piyoz, sous" data-p="46 000 so'm" data-o="" data-e="🍔" data-img="">
-<div class="pic">🍔<span class="plus">+</span></div>
-<div class="price">46 000 so'm</div><div class="name">Qarsildoq Smash</div><div class="desc">Mol go'shti, qarsildoq piyoz, sous</div></div>
-<div class="card" data-n="Tovuqli Burger" data-d="Qarsildoq tovuq, salat, sous" data-p="38 000 so'm" data-o="" data-e="🍔" data-img="">
-<div class="pic">🍔<span class="plus">+</span></div>
-<div class="price">38 000 so'm</div><div class="name">Tovuqli Burger</div><div class="desc">Qarsildoq tovuq, salat, sous</div></div>
-<div class="card" data-n="Double Smash" data-d="Ikki kotlet, ikki qavat pishloq" data-p="58 000 so'm" data-o="" data-e="🍔" data-img="">
-<div class="pic">🍔<span class="plus">+</span></div>
-<div class="price">58 000 so'm</div><div class="name">Double Smash</div><div class="desc">Ikki kotlet, ikki qavat pishloq</div></div>
-</div>
-<h2 id="c2">Hotdoglar</h2><div class="grid">
-<div class="card" data-n="Klassik Hotdog" data-d="Sosiska, bulochka, ketchup, xardal" data-p="22 000 so'm" data-o="" data-e="🌭" data-img="">
-<div class="pic">🌭<span class="plus">+</span></div>
-<div class="price">22 000 so'm</div><div class="name">Klassik Hotdog</div><div class="desc">Sosiska, bulochka, ketchup, xardal</div></div>
-<div class="card" data-n="Pishloqli Hotdog" data-d="Sosiska, eritilgan pishloq, sous" data-p="26 000 so'm" data-o="" data-e="🌭" data-img="">
-<div class="pic">🌭<span class="plus">+</span></div>
-<div class="price">26 000 so'm</div><div class="name">Pishloqli Hotdog</div><div class="desc">Sosiska, eritilgan pishloq, sous</div></div>
-<div class="card" data-n="Achchiq Hotdog" data-d="Sosiska, jalapeno, achchiq sous" data-p="27 000 so'm" data-o="" data-e="🌭" data-img="">
-<div class="pic">🌭<span class="plus">+</span></div>
-<div class="price">27 000 so'm</div><div class="name">Achchiq Hotdog</div><div class="desc">Sosiska, jalapeno, achchiq sous</div></div>
-<div class="card" data-n="Jumbo Hotdog" data-d="Katta sosiska, pishloq, qovurilgan piyoz" data-p="32 000 so'm" data-o="" data-e="🌭" data-img="">
-<div class="pic">🌭<span class="plus">+</span></div>
-<div class="price">32 000 so'm</div><div class="name">Jumbo Hotdog</div><div class="desc">Katta sosiska, pishloq, qovurilgan piyoz</div></div>
-</div>
-<h2 id="c3">Lavashlar</h2><div class="grid">
-<div class="card" data-n="Mol go'shtli lavash" data-d="Mol go'shti, salat, bodring, sous" data-p="36 000 so'm" data-o="" data-e="🌯" data-img="">
-<div class="pic">🌯<span class="plus">+</span></div>
-<div class="price">36 000 so'm</div><div class="name">Mol go'shtli lavash</div><div class="desc">Mol go'shti, salat, bodring, sous</div></div>
-<div class="card" data-n="Tovuqli lavash" data-d="Tovuq go'shti, salat, pomidor, sous" data-p="33 000 so'm" data-o="" data-e="🌯" data-img="">
-<div class="pic">🌯<span class="plus">+</span></div>
-<div class="price">33 000 so'm</div><div class="name">Tovuqli lavash</div><div class="desc">Tovuq go'shti, salat, pomidor, sous</div></div>
-<div class="card" data-n="Pishloqli lavash" data-d="Go'sht, pishloq, salat, sous" data-p="38 000 so'm" data-o="" data-e="🌯" data-img="">
-<div class="pic">🌯<span class="plus">+</span></div>
-<div class="price">38 000 so'm</div><div class="name">Pishloqli lavash</div><div class="desc">Go'sht, pishloq, salat, sous</div></div>
-<div class="card" data-n="Mini lavash" data-d="Tovuq, salat, sous (kichik)" data-p="25 000 so'm" data-o="" data-e="🌯" data-img="">
-<div class="pic">🌯<span class="plus">+</span></div>
-<div class="price">25 000 so'm</div><div class="name">Mini lavash</div><div class="desc">Tovuq, salat, sous (kichik)</div></div>
-</div>
-<h2 id="c4">Sneklar</h2><div class="grid">
-<div class="card" data-n="Fri" data-d="Qarsildoq kartoshka fri" data-p="16 000 so'm" data-o="" data-e="🍟" data-img="">
-<div class="pic">🍟<span class="plus">+</span></div>
-<div class="price">16 000 so'm</div><div class="name">Fri</div><div class="desc">Qarsildoq kartoshka fri</div></div>
-<div class="card" data-n="Nuggets (6 dona)" data-d="Tovuq nuggets, sous bilan" data-p="24 000 so'm" data-o="" data-e="🍗" data-img="">
-<div class="pic">🍗<span class="plus">+</span></div>
-<div class="price">24 000 so'm</div><div class="name">Nuggets (6 dona)</div><div class="desc">Tovuq nuggets, sous bilan</div></div>
-<div class="card" data-n="Pishloqli sharlar" data-d="Qarsildoq pishloqli sharlar" data-p="26 000 so'm" data-o="" data-e="🧀" data-img="">
-<div class="pic">🧀<span class="plus">+</span></div>
-<div class="price">26 000 so'm</div><div class="name">Pishloqli sharlar</div><div class="desc">Qarsildoq pishloqli sharlar</div></div>
-<div class="card" data-n="Piyoz halqalari" data-d="Qarsildoq piyoz halqalari" data-p="20 000 so'm" data-o="" data-e="🧅" data-img="">
-<div class="pic">🧅<span class="plus">+</span></div>
-<div class="price">20 000 so'm</div><div class="name">Piyoz halqalari</div><div class="desc">Qarsildoq piyoz halqalari</div></div>
-</div>
-<h2 id="c5">Ichimliklar</h2><div class="grid">
-<div class="card" data-n="Cola 0.5 L" data-d="Sovuq gazlangan ichimlik" data-p="9 000 so'm" data-o="" data-e="🥤" data-img="">
-<div class="pic">🥤<span class="plus">+</span></div>
-<div class="price">9 000 so'm</div><div class="name">Cola 0.5 L</div><div class="desc">Sovuq gazlangan ichimlik</div></div>
-<div class="card" data-n="Fanta 0.5 L" data-d="Sovuq gazlangan ichimlik" data-p="9 000 so'm" data-o="" data-e="🥤" data-img="">
-<div class="pic">🥤<span class="plus">+</span></div>
-<div class="price">9 000 so'm</div><div class="name">Fanta 0.5 L</div><div class="desc">Sovuq gazlangan ichimlik</div></div>
-<div class="card" data-n="Suv 0.5 L" data-d="Gazsiz ichimlik suvi" data-p="5 000 so'm" data-o="" data-e="💧" data-img="">
-<div class="pic">💧<span class="plus">+</span></div>
-<div class="price">5 000 so'm</div><div class="name">Suv 0.5 L</div><div class="desc">Gazsiz ichimlik suvi</div></div>
-<div class="card" data-n="Muzli choy" data-d="Limonli muzli choy" data-p="12 000 so'm" data-o="" data-e="🧋" data-img="">
-<div class="pic">🧋<span class="plus">+</span></div>
-<div class="price">12 000 so'm</div><div class="name">Muzli choy</div><div class="desc">Limonli muzli choy</div></div>
-</div>
-</main>
-<nav><div><a href="/frontend/home.html" class="on"><svg class="f" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Menyu</a><a href="/frontend/savat.html" class=""><svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.6 12.4a1 1 0 0 0 1 .8h8.8a1 1 0 0 0 1-.8L20 7H6"/></svg>Savat</a><a href="/frontend/buyurtmalarim.html" class=""><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 11h6M9 15h4"/></svg>Buyurtmalar</a><a href="/frontend/profile.html" class=""><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>Profil</a></div></nav>
-<div class="ov" id="ov"></div>
-<div class="sheet" id="sheet" role="dialog" aria-modal="true">
-<button class="x" id="x" aria-label="Yopish">✕</button>
-<div class="big" id="m-pic"></div>
-<div class="body">
-<div class="mname" id="m-n"></div>
-<div class="mprice"><span id="m-p"></span><s id="m-o"></s></div>
-<p class="mdesc" id="m-d"></p>
-</div>
-<div class="bar"><div class="step"><button id="mi">−</button><span id="mq">1</span><button id="pl">+</button></div>
-<button class="go" id="go">Savatga qo'shish</button></div>
-</div><script>
-(function(){
-var $=function(i){return document.getElementById(i)},q=1,base=0;
-var num=function(s){return parseInt(String(s).replace(/\D/g,""),10)||0};
-var fmt=function(n){return String(n).replace(/\B(?=(\d{3})+(?!\d))/g," ")+" so'm"};
-function upd(){$("mq").textContent=q;$("go").textContent="Savatga qo'shish · "+fmt(base*q)}
-function open(c){
-  var d=c.dataset;base=num(d.p);q=1;
-  $("m-pic").innerHTML=d.img?'<img src="'+d.img+'" alt="">':d.e;
-  $("m-n").textContent=d.n;$("m-d").textContent=d.d;$("m-p").textContent=d.p;$("m-o").textContent=d.o;
-  upd();$("ov").classList.add("on");$("sheet").classList.add("on");document.body.style.overflow="hidden";
-}
-function close(){$("ov").classList.remove("on");$("sheet").classList.remove("on");document.body.style.overflow=""}
-[].forEach.call(document.querySelectorAll(".card"),function(c){c.addEventListener("click",function(){open(c)})});
-$("ov").onclick=close;$("x").onclick=close;
-$("pl").onclick=function(){q++;upd()};$("mi").onclick=function(){if(q>1){q--;upd()}};
-document.addEventListener("keydown",function(e){if(e.key==="Escape")close()});
-var cats=[].slice.call(document.querySelectorAll(".cat"));
-cats.forEach(function(a){a.addEventListener("click",function(e){e.preventDefault();
-  var el=document.querySelector(a.getAttribute("href"));
-  window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-112,behavior:"smooth"});
-  cats.forEach(function(x){x.classList.toggle("on",x===a)})})});
-})();
-</script>
+  <header><a class="logo" href="/frontend/home.html" aria-label="United">United
+      <svg viewBox="0 0 46 34" fill="currentColor" aria-hidden="true">
+        <path d="M4 13C4 5 12 1 23 1s19 4 19 12z" />
+        <rect x="2" y="16" width="42" height="4.5" rx="2.25" />
+        <rect x="4" y="22.5" width="38" height="4.5" rx="2.25" />
+        <path d="M4 29h38v1a3.5 3.5 0 0 1-3.5 3.5h-31A3.5 3.5 0 0 1 4 30z" />
+      </svg></a></header>
+  <div class="cats"><a class="cat on" href="#c0">Kombo</a><a class="cat" href="#c1">Burgerlar</a><a class="cat"
+      href="#c2">Hotdoglar</a><a class="cat" href="#c3">Lavashlar</a><a class="cat" href="#c4">Sneklar</a><a class="cat"
+      href="#c5">Ichimliklar</a></div>
+  <main>
+    <h2 id="c0">Kombo</h2>
+    <div class="grid">
+      <div class="card" data-n="KOMBO 1" data-d="Qarsildoq Smash burger, Fri, Cola, Sous" data-p="78 000 so'm"
+        data-o="84 000 so'm" data-e="🍔" data-img="">
+        <div class="pic"><span class="badge">-7%</span>🍔<span class="plus">+</span></div>
+        <div class="price">78 000 so'm<s>84 000 so'm</s></div>
+        <div class="name">KOMBO 1</div>
+        <div class="desc">Qarsildoq Smash burger, Fri, Cola, Sous</div>
+      </div>
+      <div class="card" data-n="KOMBO 2" data-d="Klassik Smash Burger, Fri, Cola, Sous" data-p="71 000 so'm"
+        data-o="77 000 so'm" data-e="🍟" data-img="">
+        <div class="pic"><span class="badge">-8%</span>🍟<span class="plus">+</span></div>
+        <div class="price">71 000 so'm<s>77 000 so'm</s></div>
+        <div class="name">KOMBO 2</div>
+        <div class="desc">Klassik Smash Burger, Fri, Cola, Sous</div>
+      </div>
+      <div class="card" data-n="KOMBO 3" data-d="Tovuqli Burger, Fri, Cola, Souse" data-p="60 000 so'm"
+        data-o="66 000 so'm" data-e="🍗" data-img="">
+        <div class="pic"><span class="badge">-9%</span>🍗<span class="plus">+</span></div>
+        <div class="price">60 000 so'm<s>66 000 so'm</s></div>
+        <div class="name">KOMBO 3</div>
+        <div class="desc">Tovuqli Burger, Fri, Cola, Souse</div>
+      </div>
+      <div class="card" data-n="KOMBO 4" data-d="Double Smash, Fri, Cola, Sous" data-p="92 000 so'm"
+        data-o="99 000 so'm" data-e="🥤" data-img="">
+        <div class="pic"><span class="badge">-7%</span>🥤<span class="plus">+</span></div>
+        <div class="price">92 000 so'm<s>99 000 so'm</s></div>
+        <div class="name">KOMBO 4</div>
+        <div class="desc">Double Smash, Fri, Cola, Sous</div>
+      </div>
+    </div>
+    <h2 id="c1">Burgerlar</h2>
+    <div class="grid">
+      <div class="card" data-n="Klassik Smash" data-d="Mol go'shti, pishloq, pomidor, sous" data-p="42 000 so'm"
+        data-o="" data-e="🍔" data-img="">
+        <div class="pic">🍔<span class="plus">+</span></div>
+        <div class="price">42 000 so'm</div>
+        <div class="name">Klassik Smash</div>
+        <div class="desc">Mol go'shti, pishloq, pomidor, sous</div>
+      </div>
+      <div class="card" data-n="Qarsildoq Smash" data-d="Mol go'shti, qarsildoq piyoz, sous" data-p="46 000 so'm"
+        data-o="" data-e="🍔" data-img="">
+        <div class="pic">🍔<span class="plus">+</span></div>
+        <div class="price">46 000 so'm</div>
+        <div class="name">Qarsildoq Smash</div>
+        <div class="desc">Mol go'shti, qarsildoq piyoz, sous</div>
+      </div>
+      <div class="card" data-n="Tovuqli Burger" data-d="Qarsildoq tovuq, salat, sous" data-p="38 000 so'm" data-o=""
+        data-e="🍔" data-img="">
+        <div class="pic">🍔<span class="plus">+</span></div>
+        <div class="price">38 000 so'm</div>
+        <div class="name">Tovuqli Burger</div>
+        <div class="desc">Qarsildoq tovuq, salat, sous</div>
+      </div>
+      <div class="card" data-n="Double Smash" data-d="Ikki kotlet, ikki qavat pishloq" data-p="58 000 so'm" data-o=""
+        data-e="🍔" data-img="">
+        <div class="pic">🍔<span class="plus">+</span></div>
+        <div class="price">58 000 so'm</div>
+        <div class="name">Double Smash</div>
+        <div class="desc">Ikki kotlet, ikki qavat pishloq</div>
+      </div>
+    </div>
+    <h2 id="c2">Hotdoglar</h2>
+    <div class="grid">
+      <div class="card" data-n="Klassik Hotdog" data-d="Sosiska, bulochka, ketchup, xardal" data-p="22 000 so'm"
+        data-o="" data-e="🌭" data-img="">
+        <div class="pic">🌭<span class="plus">+</span></div>
+        <div class="price">22 000 so'm</div>
+        <div class="name">Klassik Hotdog</div>
+        <div class="desc">Sosiska, bulochka, ketchup, xardal</div>
+      </div>
+      <div class="card" data-n="Pishloqli Hotdog" data-d="Sosiska, eritilgan pishloq, sous" data-p="26 000 so'm"
+        data-o="" data-e="🌭" data-img="">
+        <div class="pic">🌭<span class="plus">+</span></div>
+        <div class="price">26 000 so'm</div>
+        <div class="name">Pishloqli Hotdog</div>
+        <div class="desc">Sosiska, eritilgan pishloq, sous</div>
+      </div>
+      <div class="card" data-n="Achchiq Hotdog" data-d="Sosiska, jalapeno, achchiq sous" data-p="27 000 so'm" data-o=""
+        data-e="🌭" data-img="">
+        <div class="pic">🌭<span class="plus">+</span></div>
+        <div class="price">27 000 so'm</div>
+        <div class="name">Achchiq Hotdog</div>
+        <div class="desc">Sosiska, jalapeno, achchiq sous</div>
+      </div>
+      <div class="card" data-n="Jumbo Hotdog" data-d="Katta sosiska, pishloq, qovurilgan piyoz" data-p="32 000 so'm"
+        data-o="" data-e="🌭" data-img="">
+        <div class="pic">🌭<span class="plus">+</span></div>
+        <div class="price">32 000 so'm</div>
+        <div class="name">Jumbo Hotdog</div>
+        <div class="desc">Katta sosiska, pishloq, qovurilgan piyoz</div>
+      </div>
+    </div>
+    <h2 id="c3">Lavashlar</h2>
+    <div class="grid">
+      <div class="card" data-n="Mol go'shtli lavash" data-d="Mol go'shti, salat, bodring, sous" data-p="36 000 so'm"
+        data-o="" data-e="🌯" data-img="">
+        <div class="pic">🌯<span class="plus">+</span></div>
+        <div class="price">36 000 so'm</div>
+        <div class="name">Mol go'shtli lavash</div>
+        <div class="desc">Mol go'shti, salat, bodring, sous</div>
+      </div>
+      <div class="card" data-n="Tovuqli lavash" data-d="Tovuq go'shti, salat, pomidor, sous" data-p="33 000 so'm"
+        data-o="" data-e="🌯" data-img="">
+        <div class="pic">🌯<span class="plus">+</span></div>
+        <div class="price">33 000 so'm</div>
+        <div class="name">Tovuqli lavash</div>
+        <div class="desc">Tovuq go'shti, salat, pomidor, sous</div>
+      </div>
+      <div class="card" data-n="Pishloqli lavash" data-d="Go'sht, pishloq, salat, sous" data-p="38 000 so'm" data-o=""
+        data-e="🌯" data-img="">
+        <div class="pic">🌯<span class="plus">+</span></div>
+        <div class="price">38 000 so'm</div>
+        <div class="name">Pishloqli lavash</div>
+        <div class="desc">Go'sht, pishloq, salat, sous</div>
+      </div>
+      <div class="card" data-n="Mini lavash" data-d="Tovuq, salat, sous (kichik)" data-p="25 000 so'm" data-o=""
+        data-e="🌯" data-img="">
+        <div class="pic">🌯<span class="plus">+</span></div>
+        <div class="price">25 000 so'm</div>
+        <div class="name">Mini lavash</div>
+        <div class="desc">Tovuq, salat, sous (kichik)</div>
+      </div>
+    </div>
+    <h2 id="c4">Sneklar</h2>
+    <div class="grid">
+      <div class="card" data-n="Fri" data-d="Qarsildoq kartoshka fri" data-p="16 000 so'm" data-o="" data-e="🍟"
+        data-img="">
+        <div class="pic">🍟<span class="plus">+</span></div>
+        <div class="price">16 000 so'm</div>
+        <div class="name">Fri</div>
+        <div class="desc">Qarsildoq kartoshka fri</div>
+      </div>
+      <div class="card" data-n="Nuggets (6 dona)" data-d="Tovuq nuggets, sous bilan" data-p="24 000 so'm" data-o=""
+        data-e="🍗" data-img="">
+        <div class="pic">🍗<span class="plus">+</span></div>
+        <div class="price">24 000 so'm</div>
+        <div class="name">Nuggets (6 dona)</div>
+        <div class="desc">Tovuq nuggets, sous bilan</div>
+      </div>
+      <div class="card" data-n="Pishloqli sharlar" data-d="Qarsildoq pishloqli sharlar" data-p="26 000 so'm" data-o=""
+        data-e="🧀" data-img="">
+        <div class="pic">🧀<span class="plus">+</span></div>
+        <div class="price">26 000 so'm</div>
+        <div class="name">Pishloqli sharlar</div>
+        <div class="desc">Qarsildoq pishloqli sharlar</div>
+      </div>
+      <div class="card" data-n="Piyoz halqalari" data-d="Qarsildoq piyoz halqalari" data-p="20 000 so'm" data-o=""
+        data-e="🧅" data-img="">
+        <div class="pic">🧅<span class="plus">+</span></div>
+        <div class="price">20 000 so'm</div>
+        <div class="name">Piyoz halqalari</div>
+        <div class="desc">Qarsildoq piyoz halqalari</div>
+      </div>
+    </div>
+    <h2 id="c5">Ichimliklar</h2>
+    <div class="grid">
+      <div class="card" data-n="Cola 0.5 L" data-d="Sovuq gazlangan ichimlik" data-p="9 000 so'm" data-o="" data-e="🥤"
+        data-img="">
+        <div class="pic">🥤<span class="plus">+</span></div>
+        <div class="price">9 000 so'm</div>
+        <div class="name">Cola 0.5 L</div>
+        <div class="desc">Sovuq gazlangan ichimlik</div>
+      </div>
+      <div class="card" data-n="Fanta 0.5 L" data-d="Sovuq gazlangan ichimlik" data-p="9 000 so'm" data-o="" data-e="🥤"
+        data-img="">
+        <div class="pic">🥤<span class="plus">+</span></div>
+        <div class="price">9 000 so'm</div>
+        <div class="name">Fanta 0.5 L</div>
+        <div class="desc">Sovuq gazlangan ichimlik</div>
+      </div>
+      <div class="card" data-n="Suv 0.5 L" data-d="Gazsiz ichimlik suvi" data-p="5 000 so'm" data-o="" data-e="💧"
+        data-img="">
+        <div class="pic">💧<span class="plus">+</span></div>
+        <div class="price">5 000 so'm</div>
+        <div class="name">Suv 0.5 L</div>
+        <div class="desc">Gazsiz ichimlik suvi</div>
+      </div>
+      <div class="card" data-n="Muzli choy" data-d="Limonli muzli choy" data-p="12 000 so'm" data-o="" data-e="🧋"
+        data-img="">
+        <div class="pic">🧋<span class="plus">+</span></div>
+        <div class="price">12 000 so'm</div>
+        <div class="name">Muzli choy</div>
+        <div class="desc">Limonli muzli choy</div>
+      </div>
+    </div>
+  </main>
+  <nav>
+    <div><a href="/frontend/home.html" class="on"><svg class="f" viewBox="0 0 24 24">
+          <path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" />
+        </svg>Menyu</a><a href="/frontend/savat.html" class=""><svg viewBox="0 0 24 24">
+          <circle cx="9" cy="20" r="1.4" />
+          <circle cx="18" cy="20" r="1.4" />
+          <path d="M2 3h3l2.6 12.4a1 1 0 0 0 1 .8h8.8a1 1 0 0 0 1-.8L20 7H6" />
+        </svg>Savat</a><a href="/frontend/buyurtmalarim.html" class=""><svg viewBox="0 0 24 24">
+          <rect x="5" y="4" width="14" height="17" rx="2" />
+          <path d="M9 4V3h6v1M9 11h6M9 15h4" />
+        </svg>Buyurtmalar</a><a href="/frontend/profile.html" class=""><svg viewBox="0 0 24 24">
+          <circle cx="12" cy="8" r="4" />
+          <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" />
+        </svg>Profil</a></div>
+  </nav>
+  <div class="ov" id="ov"></div>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true">
+    <button class="x" id="x" aria-label="Yopish">✕</button>
+    <div class="big" id="m-pic"></div>
+    <div class="body">
+      <div class="mname" id="m-n"></div>
+      <div class="mprice"><span id="m-p"></span><s id="m-o"></s></div>
+      <p class="mdesc" id="m-d"></p>
+    </div>
+    <div class="bar">
+      <div class="step"><button id="mi">−</button><span id="mq">1</span><button id="pl">+</button></div>
+      <button class="go" id="go">Savatga +</button>
+    </div>
+  </div>`
+  <script>
+    (function () {
+      var $ = function (i) { return document.getElementById(i) }, q = 1, base = 0;
+      var num = function (s) { return parseInt(String(s).replace(/\D/g, ""), 10) || 0 };
+      var fmt = function (n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " so'm" };
+      function upd() { $("mq").textContent = q; $("go").textContent = "Savatga + · " + fmt(base * q) }
+      function open(c) {
+        var d = c.dataset; base = num(d.p); q = 1;
+        $("m-pic").innerHTML = d.img ? '<img src="' + d.img + '" alt="">' : d.e;
+        $("m-n").textContent = d.n; $("m-d").textContent = d.d; $("m-p").textContent = d.p; $("m-o").textContent = d.o;
+        upd(); $("ov").classList.add("on"); $("sheet").classList.add("on"); document.body.style.overflow = "hidden";
+      }
+      function close() { $("ov").classList.remove("on"); $("sheet").classList.remove("on"); document.body.style.overflow = "" }
+      [].forEach.call(document.querySelectorAll(".card"), function (c) { c.addEventListener("click", function () { open(c) }) });
+      $("ov").onclick = close; $("x").onclick = close;
+      $("pl").onclick = function () { q++; upd() }; $("mi").onclick = function () { if (q > 1) { q--; upd() } };
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape") close() });
+      var cats = [].slice.call(document.querySelectorAll(".cat"));
+      cats.forEach(function (a) {
+        a.addEventListener("click", function (e) {
+          e.preventDefault();
+          var el = document.querySelector(a.getAttribute("href"));
+          window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 112, behavior: "smooth" });
+          cats.forEach(function (x) { x.classList.toggle("on", x === a) })
+        })
+      });
+    })();
+  </script>
 </body>
+
 </html>

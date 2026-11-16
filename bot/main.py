@@ -7,8 +7,9 @@ load_dotenv()
 
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import CommandStart
-from aiogram.types import Message
+from aiogram.types import CallbackQuery, Message
 from backend.database import initialize_database, save_user
+from bot.admin.a_key_inline import admin_home_keyboard, admin_products_keyboard
 from bot.keyboard.default_key import create_default_keyboard
 from bot.keyboard.inline import create_inline_keyboard
 
@@ -23,6 +24,7 @@ if not WEB_APP_URL.startswith("https://"):
     raise RuntimeError("WEB_APP_URL HTTPS manzil bo'lishi kerak")
 
 dp = Dispatcher()
+ADMIN_IDS = {8327989068}
 
 
 @dp.message(CommandStart())
@@ -39,12 +41,58 @@ async def start_handler(message: Message):
         username=user.username,
     )
 
+    if user.id in ADMIN_IDS:
+        await message.answer(
+            f"Assalomu alaykum, admin {user.full_name}! 👋\nAdmin panelga xush kelibsiz.",
+            reply_markup=admin_home_keyboard(),
+        )
+        return
+
     await message.answer(
         f"Assalomu alaykum, {message.from_user.full_name}! 👋\n\n"
         "Mini Appimizga xush kelibsiz! Telefon raqamingizni shu chatga yozsangiz,"
         " avtomatik saqlaymiz.",
         reply_markup=create_inline_keyboard(WEB_APP_URL),
     )
+
+
+@dp.callback_query(F.data.startswith("admin:"))
+async def admin_callback_handler(callback: CallbackQuery):
+    user = callback.from_user
+    if user.id not in ADMIN_IDS:
+        await callback.answer("Bu bo'lim faqat adminlar uchun.", show_alert=True)
+        return
+
+    action = (callback.data or "").removeprefix("admin:")
+    if action == "products":
+        await callback.message.edit_text(
+            "Mahsulotlar va kategoriyalar boshqaruvi:",
+            reply_markup=admin_products_keyboard(),
+        )
+    elif action == "home":
+        await callback.message.edit_text(
+            "Admin panel:",
+            reply_markup=admin_home_keyboard(),
+        )
+    else:
+        action_labels = {
+            "add_category": "Kategoriya qo'shish",
+            "edit_category": "Kategoriyani tahrirlash",
+            "add_product": "Mahsulot qo'shish",
+            "edit_product": "Mahsulotni tahrirlash",
+            "list_products": "Mahsulotlar ro'yxati",
+        }
+        label = action_labels.get(action)
+        if label is None:
+            await callback.answer("Noma'lum tugma.", show_alert=True)
+            return
+
+        await callback.message.edit_text(
+            f"{label}\n\nBu tugma hozircha statik. Backend funksiyasi keyin qo'shiladi.",
+            reply_markup=admin_products_keyboard(),
+        )
+
+    await callback.answer()
 
 
 @dp.message(F.text)
