@@ -47,15 +47,17 @@ async def start_handler(message: Message):
 
     if user.id in ADMIN_IDS:
         await message.answer(
-            f"Assalomu alaykum, admin {user.full_name}! 👋\nAdmin panelga xush kelibsiz.",
+            f"Assalomu alaykum, admin {user.full_name}! 👋\n\n"
+            "Admin panelga xush kelibsiz. Mahsulotlarni boshqarish yoki tahlillarni ko'rish uchun "
+            "quyidagi bo'limlardan birini tanlang.",
             reply_markup=admin_home_keyboard(),
         )
         return
 
     await message.answer(
-        f"Assalomu alaykum, {message.from_user.full_name}! 👋\n\n"
-        "Mini Appimizga xush kelibsiz! Telefon raqamingizni shu chatga yozsangiz,"
-        " avtomatik saqlaymiz.",
+        f"Assalomu alaykum, {user.full_name}! 👋\n\n"
+        "Mini Appimizga xush kelibsiz! Menyuni ko'rish va buyurtma berish uchun quyidagi "
+        "tugmani bosing. Telefon raqamingizni shu chatga yuborsangiz, uni profilingizga saqlaymiz.",
         reply_markup=create_inline_keyboard(WEB_APP_URL),
     )
 
@@ -64,23 +66,30 @@ async def start_handler(message: Message):
 async def admin_callback_handler(callback: CallbackQuery):
     user = callback.from_user
     if user.id not in ADMIN_IDS:
-        await callback.answer("Bu bo'lim faqat adminlar uchun.", show_alert=True)
+        await callback.answer(
+            "Bu boshqaruv bo'limi faqat adminlar uchun ochiq. Oddiy foydalanuvchi sifatida "
+            "Mini App tugmasidan foydalanishingiz mumkin.",
+            show_alert=True,
+        )
         return
 
     action = (callback.data or "").removeprefix("admin:")
     if action == "products":
         await callback.message.edit_text(
-            "Mahsulotlar bo'limi:",
+            "Mahsulotlarni boshqarish bo'limiga xush kelibsiz. Kategoriya yoki yangi mahsulot "
+            "qo'shish uchun quyidagi amallardan birini tanlang.",
             reply_markup=admin_products_keyboard(),
         )
     elif action == "analysis":
         await callback.message.edit_text(
-            "Tahlil bo'limi:",
+            "Tahlillar bo'limi ochildi. Kategoriyalar yoki alohida mahsulotlar bo'yicha "
+            "ma'lumotlarni ko'rish uchun quyidagi variantlardan birini tanlang.",
             reply_markup=admin_analysis_keyboard(),
         )
     elif action == "home":
         await callback.message.edit_text(
-            "Admin panel:",
+            "Admin panelga qaytdingiz. Davom etish uchun mahsulotlar bo'limi yoki "
+            "mahsulotlar tahlili bo'limidan birini tanlang.",
             reply_markup=admin_home_keyboard(),
         )
     else:
@@ -92,7 +101,11 @@ async def admin_callback_handler(callback: CallbackQuery):
         }
         label = action_labels.get(action)
         if label is None:
-            await callback.answer("Noma'lum tugma.", show_alert=True)
+            await callback.answer(
+                "Bu tugma topilmadi yoki eskirgan bo'lishi mumkin. Iltimos, admin panelga "
+                "qaytib, kerakli bo'limni qaytadan tanlang.",
+                show_alert=True,
+            )
             return
 
         keyboard = (
@@ -101,7 +114,8 @@ async def admin_callback_handler(callback: CallbackQuery):
             else admin_products_keyboard()
         )
         await callback.message.edit_text(
-            f"{label}\n\nBu tugma hozircha statik. Backend funksiyasi keyin qo'shiladi.",
+            f"{label} bo'limi tanlandi. Hozircha bu sahifa namuna sifatida ko'rsatilmoqda; "
+            "ma'lumot qo'shish va tahrirlash funksiyalari keyingi bosqichda ulanadi.",
             reply_markup=keyboard,
         )
 
@@ -128,7 +142,8 @@ async def phone_text_handler(message: Message):
         phone_number=phone_number,
     )
     await message.answer(
-        "Telefon raqamingiz avtomatik saqlandi. Rahmat!",
+        "Telefon raqamingiz profilingizga muvaffaqiyatli saqlandi. Rahmat! Endi Mini Appdagi "
+        "buyurtmalaringizni rasmiylashtirishda ushbu raqamdan foydalanishingiz mumkin.",
         reply_markup=create_default_keyboard(),
     )
 
@@ -141,7 +156,10 @@ async def contact_handler(message: Message):
         return
 
     if contact.user_id != user.id:
-        await message.answer("Iltimos, o'zingizning telefon raqamingizni yuboring.")
+        await message.answer(
+            "Yuborilgan kontakt sizning raqamingiz emas ekan. Iltimos, xavfsizlik uchun "
+            "Telegram profilingizga tegishli telefon raqamini yuboring."
+        )
         return
 
     save_user(
@@ -152,7 +170,8 @@ async def contact_handler(message: Message):
         phone_number=contact.phone_number,
     )
     await message.answer(
-        "Telefon raqamingiz saqlandi. Rahmat!",
+        "Telefon raqamingiz profilingizga muvaffaqiyatli saqlandi. Rahmat! Endi Mini Appdan "
+        "foydalanib, buyurtmangizni qulay tarzda rasmiylashtirishingiz mumkin.",
         reply_markup=create_default_keyboard(),
     )
 
