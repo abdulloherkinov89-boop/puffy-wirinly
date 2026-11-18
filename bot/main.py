@@ -16,11 +16,11 @@ from bot.keyboard.inline import create_inline_keyboard
 
 
 def get_web_app_url() -> str:
-    web_app_url = os.getenv("WEB_APP_URL", "https://puffy-mini-app-web-production.up.railway.app/").strip()
+    web_app_url = os.getenv("WEB_APP_URL", "").strip()
     if not web_app_url:
         railway_domain = os.getenv("RAILWAY_PUBLIC_DOMAIN", "").strip()
         if railway_domain:
-            web_app_url = f"https://{railway_domain}"
+            web_app_url = f"https://puffy-mini-app-web-production.up.railway.app/"
     if not web_app_url.startswith("https://"):
         raise RuntimeError(
             "WEB_APP_URL ni Railway domeningizning https:// manzili bilan sozlang"
