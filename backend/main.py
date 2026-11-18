@@ -8,6 +8,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from bot.main import create_bot, run_bot
+from backend.catalog_api import router as catalog_router
 from backend.database import initialize_database
 
 FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
@@ -33,6 +34,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+app.include_router(catalog_router)
 app.mount("/frontend", StaticFiles(directory=FRONTEND_DIR), name="frontend")
 
 

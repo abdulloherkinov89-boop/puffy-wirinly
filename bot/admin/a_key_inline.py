@@ -14,14 +14,18 @@ def admin_home_keyboard() -> InlineKeyboardMarkup:
     )
 
 
-def admin_products_keyboard() -> InlineKeyboardMarkup:
-    """Show static category/product creation actions."""
+def admin_products_keyboard(has_categories: bool = True) -> InlineKeyboardMarkup:
+    """Show product creation only when at least one category exists."""
+    actions = [
+        [InlineKeyboardButton(text="➕ Kategoriya qo'shish", callback_data="admin:add_category")]
+    ]
+    if has_categories:
+        actions.append(
+            [InlineKeyboardButton(text="➕ Mahsulot qo'shish", callback_data="admin:add_product")]
+        )
+    actions.append([InlineKeyboardButton(text="⬅️ Orqaga", callback_data="admin:home")])
     return InlineKeyboardMarkup(
-        inline_keyboard=[
-            [InlineKeyboardButton(text="➕ Kategoriya qo'shish", callback_data="admin:add_category")],
-            [InlineKeyboardButton(text="➕ Mahsulot qo'shish", callback_data="admin:add_product")],
-            [InlineKeyboardButton(text="⬅️ Orqaga", callback_data="admin:home")],
-        ]
+        inline_keyboard=actions
     )
 
 

@@ -560,6 +560,12 @@
       color: var(--mut);
       font-weight: 500
     }
+
+    .catalog-status {
+      margin: 24px 14px;
+      color: var(--mut);
+      text-align: center
+    }
   </style>
 </head>
 
@@ -571,6 +577,9 @@
         <rect x="4" y="22.5" width="38" height="4.5" rx="2.25" />
         <path d="M4 29h38v1a3.5 3.5 0 0 1-3.5 3.5h-31A3.5 3.5 0 0 1 4 30z" />
       </svg></a></header>
+  <div class="cats" id="cats"></div>
+  <main id="catalog"><p class="catalog-status" id="catalog-status">Menyu yuklanmoqda...</p></main>
+  <!-- Old hard-coded demo catalog removed; categories and products come from the database API.
   <div class="cats"><a class="cat on" href="#c0">Kombo</a><a class="cat" href="#c1">Burgerlar</a><a class="cat"
       href="#c2">Hotdoglar</a><a class="cat" href="#c3">Lavashlar</a><a class="cat" href="#c4">Sneklar</a><a class="cat"
       href="#c5">Ichimliklar</a></div>
@@ -762,6 +771,7 @@
       </div>
     </div>
   </main>
+  -->
   <nav>
     <div><a href="/frontend/home.html" class="on"><svg class="f" viewBox="0 0 24 24">
           <path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" />
@@ -790,35 +800,8 @@
       <div class="step"><button id="mi">−</button><span id="mq">1</span><button id="pl">+</button></div>
       <button class="go" id="go">Savatga +</button>
     </div>
-  </div>`
-  <script>
-    (function () {
-      var $ = function (i) { return document.getElementById(i) }, q = 1, base = 0;
-      var num = function (s) { return parseInt(String(s).replace(/\D/g, ""), 10) || 0 };
-      var fmt = function (n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " so'm" };
-      function upd() { $("mq").textContent = q; $("go").textContent = "Savatga + · " + fmt(base * q) }
-      function open(c) {
-        var d = c.dataset; base = num(d.p); q = 1;
-        $("m-pic").innerHTML = d.img ? '<img src="' + d.img + '" alt="">' : d.e;
-        $("m-n").textContent = d.n; $("m-d").textContent = d.d; $("m-p").textContent = d.p; $("m-o").textContent = d.o;
-        upd(); $("ov").classList.add("on"); $("sheet").classList.add("on"); document.body.style.overflow = "hidden";
-      }
-      function close() { $("ov").classList.remove("on"); $("sheet").classList.remove("on"); document.body.style.overflow = "" }
-      [].forEach.call(document.querySelectorAll(".card"), function (c) { c.addEventListener("click", function () { open(c) }) });
-      $("ov").onclick = close; $("x").onclick = close;
-      $("pl").onclick = function () { q++; upd() }; $("mi").onclick = function () { if (q > 1) { q--; upd() } };
-      document.addEventListener("keydown", function (e) { if (e.key === "Escape") close() });
-      var cats = [].slice.call(document.querySelectorAll(".cat"));
-      cats.forEach(function (a) {
-        a.addEventListener("click", function (e) {
-          e.preventDefault();
-          var el = document.querySelector(a.getAttribute("href"));
-          window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 112, behavior: "smooth" });
-          cats.forEach(function (x) { x.classList.toggle("on", x === a) })
-        })
-      });
-    })();
-  </script>
+  </div>
+  <script src="/frontend/js/catalog.js" defer></script>
 </body>
 
 </html>

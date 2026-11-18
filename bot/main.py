@@ -6,9 +6,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from aiogram import Bot, Dispatcher, F
-from aiogram.filters import CommandStart
+from aiogram.filters import CommandStart, StateFilter
 from aiogram.types import CallbackQuery, Message
-from backend.database import initialize_database, save_user
+from backend.database import initialize_database, list_categories, save_user
+from bot.admin.product_flow import ADMIN_IDS, router as admin_product_router
 from bot.admin.a_key_inline import (
     admin_analysis_keyboard,
     admin_home_keyboard,
@@ -28,7 +29,7 @@ if not WEB_APP_URL.startswith("https://"):
     raise RuntimeError("WEB_APP_URL HTTPS manzil bo'lishi kerak")
 
 dp = Dispatcher()
-ADMIN_IDS = {8327989068}
+dp.include_router(admin_product_router)
 
 
 @dp.message(CommandStart())
@@ -62,7 +63,17 @@ async def start_handler(message: Message):
     )
 
 
-@dp.callback_query(F.data.startswith("admin:"))
+@dp.callback_query(
+    F.data.in_(
+        {
+            "admin:products",
+            "admin:analysis",
+            "admin:home",
+            "admin:category_analysis",
+            "admin:product_analysis",
+        }
+    )
+)
 async def admin_callback_handler(callback: CallbackQuery):
     user = callback.from_user
     if user.id not in ADMIN_IDS:
@@ -75,10 +86,11 @@ async def admin_callback_handler(callback: CallbackQuery):
 
     action = (callback.data or "").removeprefix("admin:")
     if action == "products":
+        categories = list_categories()
         await callback.message.edit_text(
             "Mahsulotlarni boshqarish bo'limiga xush kelibsiz. Kategoriya yoki yangi mahsulot "
             "qo'shish uchun quyidagi amallardan birini tanlang.",
-            reply_markup=admin_products_keyboard(),
+            reply_markup=admin_products_keyboard(has_categories=bool(categories)),
         )
     elif action == "analysis":
         await callback.message.edit_text(
@@ -94,8 +106,6 @@ async def admin_callback_handler(callback: CallbackQuery):
         )
     else:
         action_labels = {
-            "add_category": "Kategoriya qo'shish",
-            "add_product": "Mahsulot qo'shish",
             "category_analysis": "Kategoriya tahlili",
             "product_analysis": "Mahsulot tahlili",
         }
@@ -111,7 +121,7 @@ async def admin_callback_handler(callback: CallbackQuery):
         keyboard = (
             admin_analysis_keyboard()
             if action.endswith("_analysis")
-            else admin_products_keyboard()
+            else admin_products_keyboard(has_categories=bool(list_categories()))
         )
         await callback.message.edit_text(
             f"{label} bo'limi tanlandi. Hozircha bu sahifa namuna sifatida ko'rsatilmoqda; "
@@ -122,7 +132,7 @@ async def admin_callback_handler(callback: CallbackQuery):
     await callback.answer()
 
 
-@dp.message(F.text)
+@dp.message(F.text, StateFilter(None))
 async def phone_text_handler(message: Message):
     user = message.from_user
     text = (message.text or "").strip()
@@ -148,7 +158,7 @@ async def phone_text_handler(message: Message):
     )
 
 
-@dp.message(F.contact)
+@dp.message(F.contact, StateFilter(None))
 async def contact_handler(message: Message):
     user = message.from_user
     contact = message.contact
