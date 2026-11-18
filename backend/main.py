@@ -43,6 +43,11 @@ async def home():
     return FileResponse(FRONTEND_HOME)
 
 
+@app.get("/health", include_in_schema=False)
+async def health_check():
+    return {"status": "ok"}
+
+
 @app.head("/")
 async def home_health_check():
     return Response(status_code=200)

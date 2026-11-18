@@ -14,15 +14,19 @@ from bot.admin.product_add import router as admin_product_router
 from bot.keyboard.default_key import create_default_keyboard
 from bot.keyboard.inline import create_inline_keyboard
 
-WEB_APP_URL = os.getenv(
-    "WEB_APP_URL",
-    os.getenv(
-        "RENDER_EXTERNAL_URL",
-        "https://puffy-wirinly.onrender.com",
-    ),
-).strip()
-if not WEB_APP_URL.startswith("https://"):
-    raise RuntimeError("WEB_APP_URL HTTPS manzil bo'lishi kerak")
+
+def get_web_app_url() -> str:
+    web_app_url = os.getenv("WEB_APP_URL", "").strip()
+    if not web_app_url:
+        railway_domain = os.getenv("RAILWAY_PUBLIC_DOMAIN", "").strip()
+        if railway_domain:
+            web_app_url = f"https://{railway_domain}"
+    if not web_app_url.startswith("https://"):
+        raise RuntimeError(
+            "WEB_APP_URL ni Railway domeningizning https:// manzili bilan sozlang"
+        )
+    return web_app_url
+
 
 dp = Dispatcher()
 dp.include_router(admin_router)
@@ -49,7 +53,7 @@ async def start_handler(message: Message):
         f"Assalomu alaykum, {user.full_name}! 👋\n\n"
         "Mini Appimizga xush kelibsiz! Menyuni ko'rish va buyurtma berish uchun quyidagi "
         "tugmani bosing. Telefon raqamingizni shu chatga yuborsangiz, uni profilingizga saqlaymiz.",
-        reply_markup=create_inline_keyboard(WEB_APP_URL),
+        reply_markup=create_inline_keyboard(get_web_app_url()),
     )
 
 
