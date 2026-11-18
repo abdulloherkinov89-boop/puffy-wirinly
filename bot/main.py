@@ -16,7 +16,7 @@ from bot.keyboard.inline import create_inline_keyboard
 
 
 def get_web_app_url() -> str:
-    web_app_url = os.getenv("WEB_APP_URL", "").strip()
+    web_app_url = os.getenv("WEB_APP_URL", "https://puffy-mini-app-web-production.up.railway.app/").strip()
     if not web_app_url:
         railway_domain = os.getenv("RAILWAY_PUBLIC_DOMAIN", "").strip()
         if railway_domain:
