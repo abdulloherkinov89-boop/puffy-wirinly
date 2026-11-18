@@ -157,17 +157,27 @@
     if (event.key === "Escape") closeSheet();
   });
 
-  Promise.all([
-    fetch("/api/categories").then(function (response) {
-      if (!response.ok) throw new Error("Kategoriyalar olinmadi");
-      return response.json();
-    }),
-    fetch("/api/products").then(function (response) {
-      if (!response.ok) throw new Error("Mahsulotlar olinmadi");
-      return response.json();
-    })
-  ]).then(renderCatalog).catch(function () {
-    statusNode.textContent = "Menyuni yuklab bo'lmadi. Sahifani yangilab ko'ring.";
-    catalogNode.replaceChildren(statusNode);
+  function loadCatalog() {
+    Promise.all([
+      fetch("/api/categories", { cache: "no-store" }).then(function (response) {
+        if (!response.ok) throw new Error("Kategoriyalar olinmadi");
+        return response.json();
+      }),
+      fetch("/api/products", { cache: "no-store" }).then(function (response) {
+        if (!response.ok) throw new Error("Mahsulotlar olinmadi");
+        return response.json();
+      })
+    ]).then(renderCatalog).catch(function () {
+      statusNode.textContent = "Menyuni yuklab bo'lmadi. Sahifani yangilab ko'ring.";
+      catalogNode.replaceChildren(statusNode);
+    });
+  }
+
+  loadCatalog();
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) loadCatalog();
+  });
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted) loadCatalog();
   });
 })();
