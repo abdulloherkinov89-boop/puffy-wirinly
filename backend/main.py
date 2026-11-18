@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager, suppress
 from pathlib import Path
 
 from fastapi import FastAPI
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
 
 from bot.main import create_bot, run_bot
@@ -41,6 +41,11 @@ app.mount("/frontend", StaticFiles(directory=FRONTEND_DIR), name="frontend")
 @app.get("/")
 async def home():
     return FileResponse(FRONTEND_HOME)
+
+
+@app.head("/")
+async def home_health_check():
+    return Response(status_code=200)
 
 
 if __name__ == "__main__":

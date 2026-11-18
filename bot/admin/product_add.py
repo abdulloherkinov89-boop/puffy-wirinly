@@ -1,5 +1,4 @@
 import re
-import sqlite3
 from pathlib import Path
 from urllib.parse import urlparse
 from uuid import uuid4
@@ -8,6 +7,7 @@ from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.types import CallbackQuery, Message
+from sqlalchemy.exc import IntegrityError
 
 from backend.database import add_category, add_product, list_categories
 from bot.admin.admin import is_admin
@@ -59,7 +59,7 @@ async def save_category(message: Message, state: FSMContext) -> None:
 
     try:
         add_category(name)
-    except sqlite3.IntegrityError:
+    except IntegrityError:
         await message.answer("Bu kategoriya avval qo'shilgan. Boshqa nom kiriting.")
         return
 

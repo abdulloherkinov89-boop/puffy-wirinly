@@ -35,7 +35,6 @@ async def start_handler(message: Message):
     if user is None:
         return
 
-    initialize_database()
     save_user(
         tg_id=user.id,
         full_name=user.full_name,
