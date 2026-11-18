@@ -17,7 +17,7 @@ from sqlalchemy import (
     func,
     select,
     update,
-)
+) 
 from sqlalchemy.engine import Engine
 from sqlalchemy.pool import StaticPool
 
