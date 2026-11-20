@@ -23,7 +23,7 @@ def get_web_app_url() -> str:
         railway_domain = os.getenv("RAILWAY_PUBLIC_DOMAIN", "").strip()
         if railway_domain:
             web_app_url = f"https://{railway_domain}"
-    if not web_app_url.startswith("https://"):
+    if not web_app_url.startswith("https://puffy-mini-app-web-production.up.railway.app/"):
         raise RuntimeError(
             "WEB_APP_URL ni Railway domeningizning https:// manzili bilan sozlang"
         )
