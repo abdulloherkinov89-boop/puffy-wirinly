@@ -13,6 +13,8 @@ from backend.database import initialize_database
 
 FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
 FRONTEND_HOME = FRONTEND_DIR / "home.html"
+UPLOADS_DIR = FRONTEND_DIR / "uploads"
+os.makedirs(UPLOADS_DIR, exist_ok=True)
 
 
 @asynccontextmanager

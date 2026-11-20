@@ -21,19 +21,32 @@
       "Savatga + · " + formatPrice(basePrice * quantity);
   }
 
+  function appendProductImage(container, product) {
+    if (!product.image_url) {
+      container.textContent = "🍔";
+      return;
+    }
+
+    var image = document.createElement("img");
+    image.src = product.image_url;
+    image.alt = product.name;
+    image.onerror = function () {
+      console.error("[catalog] Product image failed to load", {
+        url: image.src,
+        productId: product.id,
+        productName: product.name
+      });
+      image.replaceWith(document.createTextNode("🍔"));
+    };
+    container.appendChild(image);
+  }
+
   function openProduct(product) {
     quantity = 1;
     basePrice = Number(product.price);
     var picture = document.getElementById("m-pic");
     picture.replaceChildren();
-    if (product.image_url) {
-      var image = document.createElement("img");
-      image.src = product.image_url;
-      image.alt = product.name;
-      picture.appendChild(image);
-    } else {
-      picture.textContent = "🍔";
-    }
+    appendProductImage(picture, product);
     document.getElementById("m-n").textContent = product.name;
     document.getElementById("m-d").textContent = product.about;
     document.getElementById("m-p").textContent = formatPrice(basePrice);
@@ -51,14 +64,7 @@
 
     var picture = document.createElement("div");
     picture.className = "pic";
-    if (product.image_url) {
-      var image = document.createElement("img");
-      image.src = product.image_url;
-      image.alt = product.name;
-      picture.appendChild(image);
-    } else {
-      picture.textContent = "🍔";
-    }
+    appendProductImage(picture, product);
     var plus = document.createElement("span");
     plus.className = "plus";
     plus.textContent = "+";
@@ -157,17 +163,69 @@
     if (event.key === "Escape") closeSheet();
   });
 
+  function fetchJson(url) {
+    return fetch(url, { cache: "no-store" }).then(function (response) {
+      if (!response.ok) {
+        return response.text().then(function (body) {
+          var details = body ? ": " + body.slice(0, 300) : "";
+          var error = new Error(
+            "HTTP " + response.status + " " + response.statusText + details
+          );
+          error.status = response.status;
+          throw error;
+        });
+      }
+      return response.json().catch(function (error) {
+        throw new Error("Invalid JSON response: " + error.message);
+      });
+    }).catch(function (error) {
+      console.error("[catalog] API request failed", {
+        url: url,
+        status: error.status || null,
+        message: error.message
+      });
+      throw error;
+    });
+  }
+
+  function validateCatalog(categories, products) {
+    if (!Array.isArray(categories)) {
+      throw new Error("/api/categories must return a JSON array");
+    }
+    if (!Array.isArray(products)) {
+      throw new Error("/api/products must return a JSON array");
+    }
+
+    categories.forEach(function (category, index) {
+      if (!category || category.id == null || typeof category.name !== "string") {
+        throw new Error("Invalid category at index " + index + ": expected id and name");
+      }
+    });
+
+    var productFields = [
+      "id", "name", "price", "image_url", "category_id", "about", "category_name"
+    ];
+    products.forEach(function (product, index) {
+      var missingField = productFields.find(function (field) {
+        return !product || !Object.prototype.hasOwnProperty.call(product, field);
+      });
+      if (missingField) {
+        throw new Error(
+          "Invalid product at index " + index + ": missing " + missingField
+        );
+      }
+    });
+  }
+
   function loadCatalog() {
     Promise.all([
-      fetch("/api/categories", { cache: "no-store" }).then(function (response) {
-        if (!response.ok) throw new Error("Kategoriyalar olinmadi");
-        return response.json();
-      }),
-      fetch("/api/products", { cache: "no-store" }).then(function (response) {
-        if (!response.ok) throw new Error("Mahsulotlar olinmadi");
-        return response.json();
-      })
-    ]).then(renderCatalog).catch(function () {
+      fetchJson("/api/categories"),
+      fetchJson("/api/products")
+    ]).then(function (data) {
+      validateCatalog(data[0], data[1]);
+      renderCatalog(data[0], data[1]);
+    }).catch(function (error) {
+      console.error("[catalog] Menu could not be loaded", error);
       statusNode.textContent = "Menyuni yuklab bo'lmadi. Sahifani yangilab ko'ring.";
       catalogNode.replaceChildren(statusNode);
     });
