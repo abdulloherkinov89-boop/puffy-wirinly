@@ -4,6 +4,7 @@
   var statusNode = document.getElementById("catalog-status");
   var quantity = 1;
   var basePrice = 0;
+  var selectedProduct = null;
 
   function formatPrice(value) {
     return Number(value || 0).toLocaleString("uz-UZ") + " so'm";
@@ -17,8 +18,7 @@
 
   function updateQuantity() {
     document.getElementById("mq").textContent = quantity;
-    document.getElementById("go").textContent =
-      "Savatga + · " + formatPrice(basePrice * quantity);
+    document.getElementById("go").textContent = "Savatga +";
   }
 
   function appendProductImage(container, product) {
@@ -42,6 +42,7 @@
   }
 
   function openProduct(product) {
+    selectedProduct = product;
     quantity = 1;
     basePrice = Number(product.price);
     var picture = document.getElementById("m-pic");
@@ -61,14 +62,62 @@
     var card = document.createElement("div");
     card.className = "card";
     card.tabIndex = 0;
+    var cardQuantity = window.ShopCart.getQuantity(product.id);
 
     var picture = document.createElement("div");
     picture.className = "pic";
     appendProductImage(picture, product);
-    var plus = document.createElement("span");
-    plus.className = "plus";
-    plus.textContent = "+";
-    picture.appendChild(plus);
+    var addControl = document.createElement("div");
+    addControl.className = "plus";
+
+    function renderAddControl() {
+      addControl.replaceChildren();
+      if (cardQuantity === 0) {
+        var addButton = document.createElement("button");
+        addButton.type = "button";
+        addButton.className = "quick-add";
+        addButton.textContent = "+";
+        addButton.setAttribute("aria-label", product.name + " savatga qo'shish");
+        addButton.addEventListener("click", function (event) {
+          event.stopPropagation();
+          cardQuantity = 1;
+          window.ShopCart.setQuantity(product, cardQuantity);
+          renderAddControl();
+        });
+        addControl.appendChild(addButton);
+        return;
+      }
+
+      var minusButton = document.createElement("button");
+      minusButton.type = "button";
+      minusButton.textContent = "−";
+      minusButton.setAttribute("aria-label", product.name + " sonini kamaytirish");
+      minusButton.addEventListener("click", function (event) {
+        event.stopPropagation();
+        cardQuantity -= 1;
+        window.ShopCart.setQuantity(product, cardQuantity);
+        renderAddControl();
+      });
+      var count = document.createElement("span");
+      count.textContent = cardQuantity;
+      var plusButton = document.createElement("button");
+      plusButton.type = "button";
+      plusButton.textContent = "+";
+      plusButton.setAttribute("aria-label", product.name + " sonini oshirish");
+      plusButton.addEventListener("click", function (event) {
+        event.stopPropagation();
+        cardQuantity += 1;
+        window.ShopCart.setQuantity(product, cardQuantity);
+        renderAddControl();
+      });
+      addControl.append(minusButton, count, plusButton);
+    }
+    renderAddControl();
+    window.addEventListener("shopcartchange", function () {
+      cardQuantity = window.ShopCart.getQuantity(product.id);
+      renderAddControl();
+    });
+    picture.appendChild(addControl);
 
     var price = document.createElement("div");
     price.className = "price";
@@ -83,6 +132,7 @@
     card.append(picture, price, name, about);
     card.addEventListener("click", function () { openProduct(product); });
     card.addEventListener("keydown", function (event) {
+      if (event.target !== card) return;
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
         openProduct(product);
@@ -158,6 +208,13 @@
       quantity -= 1;
       updateQuantity();
     }
+  });
+  document.getElementById("go").addEventListener("click", function () {
+    window.ShopCart.setQuantity(
+      selectedProduct,
+      window.ShopCart.getQuantity(selectedProduct.id) + quantity
+    );
+    closeSheet();
   });
   document.addEventListener("keydown", function (event) {
     if (event.key === "Escape") closeSheet();

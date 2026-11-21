@@ -133,6 +133,21 @@ def save_user(
             connection.execute(users.insert().values(tg_id=tg_id, **values))
 
 
+def get_user(tg_id: int) -> dict[str, int | str | None] | None:
+    """Return the saved profile for a Telegram user, if it exists."""
+    with _get_engine().connect() as connection:
+        row = connection.execute(
+            select(
+                users.c.tg_id,
+                users.c.full_name,
+                users.c.first_name,
+                users.c.username,
+                users.c.phone_number,
+            ).where(users.c.tg_id == tg_id)
+        ).mappings().first()
+    return dict(row) if row else None
+
+
 def list_categories() -> list[dict[str, int | str]]:
     """Return categories in the order they were added."""
     with _get_engine().connect() as connection:

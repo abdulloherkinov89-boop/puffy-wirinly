@@ -95,8 +95,9 @@ nav a.on svg.f{fill:currentColor}
 <body>
 <header><a class="logo" href="/frontend/home.html" aria-label="United">United
 <svg viewBox="0 0 46 34" fill="currentColor" aria-hidden="true"><path d="M4 13C4 5 12 1 23 1s19 4 19 12z"/><rect x="2" y="16" width="42" height="4.5" rx="2.25"/><rect x="4" y="22.5" width="38" height="4.5" rx="2.25"/><path d="M4 29h38v1a3.5 3.5 0 0 1-3.5 3.5h-31A3.5 3.5 0 0 1 4 30z"/></svg></a></header>
-<main><h2>Savat</h2><div class="row"><div class="t">🍔</div><div class="i"><b>KOMBO 1</b><small>78 000 so'm</small></div><div class="step sm"><button>−</button><span>1</span><button>+</button></div></div><div class="row"><div class="t">🌭</div><div class="i"><b>Klassik Hotdog</b><small>44 000 so'm</small></div><div class="step sm"><button>−</button><span>2</span><button>+</button></div></div><div class="row"><div class="t">🥤</div><div class="i"><b>Cola 0.5 L</b><small>9 000 so'm</small></div><div class="step sm"><button>−</button><span>1</span><button>+</button></div></div><div class="total"><span>Jami</span><span>131 000 so'm</span></div><button class="order">Buyurtma berish</button></main>
+<main><h2>Savat</h2><div id="cart-items"></div><div class="total"><span>Jami</span><span id="cart-total">0 so'm</span></div><button class="order">Buyurtma berish</button></main>
 <nav><div><a href="/frontend/home.html" class=""><svg class="f" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Menyu</a><a href="/frontend/savat.html" class="on"><svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.6 12.4a1 1 0 0 0 1 .8h8.8a1 1 0 0 0 1-.8L20 7H6"/></svg>Savat</a><a href="/frontend/buyurtmalarim.html" class=""><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 11h6M9 15h4"/></svg>Buyurtmalar</a><a href="/frontend/profile.html" class=""><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>Profil</a></div></nav>
 
+<script src="/frontend/js/cart.js" defer></script>
 </body>
 </html>
