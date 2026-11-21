@@ -13,6 +13,7 @@ from sqlalchemy import (
     Text,
     UniqueConstraint,
     create_engine,
+    delete,
     event,
     func,
     select,
@@ -55,6 +56,16 @@ products = Table(
     Column("about", Text, nullable=False),
     Column("created_at", Text, nullable=False, server_default=func.current_timestamp()),
 )
+cart_items = Table(
+    "cart_items",
+    metadata,
+    Column("tg_id", BigInteger, ForeignKey("users.tg_id", ondelete="CASCADE"), nullable=False),
+    Column("product_id", Integer, ForeignKey("products.id", ondelete="CASCADE"), nullable=False),
+    Column("quantity", Integer, nullable=False),
+    Column("updated_at", Text, nullable=False, server_default=func.current_timestamp()),
+    UniqueConstraint("tg_id", "product_id", name="uq_cart_items_user_product"),
+)
+Index("ix_cart_items_tg_id", cart_items.c.tg_id)
 
 _engine: Engine | None = None
 
@@ -199,3 +210,90 @@ def list_products() -> list[dict[str, int | str]]:
     with _get_engine().connect() as connection:
         rows = connection.execute(statement).mappings().all()
     return [dict(row) for row in rows]
+
+
+def add_to_cart(
+    *, tg_id: int, product_id: int, quantity: int
+) -> None:
+    """Add a product to the user's cart or increase its existing quantity."""
+    with _get_engine().begin() as connection:
+        existing = connection.execute(
+            select(cart_items.c.quantity).where(
+                cart_items.c.tg_id == tg_id,
+                cart_items.c.product_id == product_id,
+            )
+        ).scalar_one_or_none()
+        if existing is None:
+            connection.execute(cart_items.insert().values(
+                tg_id=tg_id,
+                product_id=product_id,
+                quantity=quantity,
+            ))
+        else:
+            connection.execute(
+                update(cart_items)
+                .where(
+                    cart_items.c.tg_id == tg_id,
+                    cart_items.c.product_id == product_id,
+                )
+                .values(
+                    quantity=existing + quantity,
+                    updated_at=func.current_timestamp(),
+                )
+            )
+
+
+def get_cart(tg_id: int) -> list[dict[str, int | str]]:
+    """Return the contents of the user's cart with product details."""
+    statement = (
+        select(
+            cart_items.c.tg_id,
+            cart_items.c.product_id,
+            cart_items.c.quantity,
+            products.c.name,
+            products.c.price,
+            products.c.image_url,
+        )
+        .join(products, products.c.id == cart_items.c.product_id)
+        .where(cart_items.c.tg_id == tg_id)
+    )
+    with _get_engine().connect() as connection:
+        rows = connection.execute(statement).mappings().all()
+    return [dict(row) for row in rows]
+
+
+def update_cart_item(
+    *, tg_id: int, product_id: int, quantity: int
+) -> None:
+    """Set a product quantity, creating the cart row if needed."""
+    with _get_engine().begin() as connection:
+        existing = connection.execute(
+            select(cart_items.c.quantity).where(
+                cart_items.c.tg_id == tg_id,
+                cart_items.c.product_id == product_id,
+            )
+        ).scalar_one_or_none()
+        if existing is None:
+            connection.execute(cart_items.insert().values(
+                tg_id=tg_id,
+                product_id=product_id,
+                quantity=quantity,
+            ))
+        else:
+            connection.execute(
+                update(cart_items)
+                .where(
+                    cart_items.c.tg_id == tg_id,
+                    cart_items.c.product_id == product_id,
+                )
+                .values(quantity=quantity, updated_at=func.current_timestamp())
+            )
+
+
+def remove_from_cart(tg_id: int, product_id: int) -> None:
+    """Remove a product from the user's cart."""
+    engine = _get_engine()
+    with engine.begin() as connection:
+        connection.execute(
+            cart_items.delete().where(cart_items.c.tg_id == tg_id, cart_items.c.product_id == product_id)
+        )
