@@ -16,11 +16,34 @@
     window.dispatchEvent(new CustomEvent("shopcartchange"));
   }
 
+  function getInitData() {
+    var webApp = window.Telegram && window.Telegram.WebApp;
+    webApp && webApp.ready && webApp.ready();
+    return webApp && webApp.initData ? webApp.initData : "";
+  }
+
+  function syncWithBackend(product, quantity) {
+    var initData = getInitData();
+    if (!initData) return;
+    fetch("/api/cart/update", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        init_data: initData,
+        product_id: Number(product.id),
+        quantity: Math.floor(quantity)
+      })
+    }).catch(function (error) {
+      console.error("[cart] Backend cart update failed", error);
+    });
+  }
+
   function setQuantity(product, quantity) {
     if (!product || product.id == null) return;
     var cart = readCart();
     var id = String(product.id);
-    if (quantity <= 0) {
+    var nextQuantity = Math.floor(Number(quantity) || 0);
+    if (nextQuantity <= 0) {
       delete cart[id];
     } else {
       cart[id] = {
@@ -31,10 +54,11 @@
           image_url: product.image_url || "",
           about: product.about || ""
         },
-        quantity: Math.floor(quantity)
+        quantity: nextQuantity
       };
     }
     saveCart(cart);
+    syncWithBackend(product, nextQuantity);
   }
 
   function getQuantity(productId) {
@@ -112,12 +136,45 @@
     if (totalNode) totalNode.textContent = formatPrice(total);
   }
 
+  function loadBackendCart() {
+    var initData = getInitData();
+    if (!initData) return;
+    fetch("/api/cart/load", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ init_data: initData })
+    }).then(function (response) {
+      if (!response.ok) throw new Error("HTTP " + response.status);
+      return response.json();
+    }).then(function (items) {
+      var cart = {};
+      items.forEach(function (item) {
+        cart[String(item.product_id)] = {
+          product: {
+            id: item.product_id,
+            name: item.name,
+            price: Number(item.price) || 0,
+            image_url: item.image_url || "",
+            about: ""
+          },
+          quantity: Number(item.quantity) || 0
+        };
+      });
+      saveCart(cart);
+    }).catch(function (error) {
+      console.error("[cart] Backend cart could not be loaded", error);
+    });
+  }
+
   window.ShopCart = {
     getQuantity: getQuantity,
     setQuantity: setQuantity,
     render: renderCart
   };
   window.addEventListener("shopcartchange", renderCart);
-  document.addEventListener("DOMContentLoaded", renderCart);
+  document.addEventListener("DOMContentLoaded", function () {
+    renderCart();
+    loadBackendCart();
+  });
   renderCart();
 })();
