@@ -166,6 +166,17 @@
     });
   }
 
+  function authorizeAdmin() {
+    if (!initData()) {
+      throw new Error("Admin panelga faqat Telegram orqali kirish mumkin. Botdagi admin tugmasini bosing.");
+    }
+    return request("/api/admin/auth", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ init_data: initData() })
+    });
+  }
+
   document.getElementById("first-category-button").addEventListener("click", function () { openModal("category"); });
   document.getElementById("add-category-button").addEventListener("click", function () { openModal("category"); });
   document.getElementById("add-product-button").addEventListener("click", function () { openModal("product"); });
@@ -238,6 +249,20 @@
   });
 
   if (telegramApp) telegramApp.ready();
-  loadAdminCatalog();
-  document.addEventListener("visibilitychange", function () { if (!document.hidden) loadAdminCatalog(); });
+  authorizeAdmin().then(loadAdminCatalog).catch(function (error) {
+    showStatus("Kirish rad etildi: " + error.message, true);
+    firstCategory.classList.add("hidden");
+    actionsNode.classList.add("hidden");
+    searchInput.classList.add("hidden");
+    categoryList.classList.add("hidden");
+    productList.replaceChildren();
+  });
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) authorizeAdmin().then(loadAdminCatalog).catch(function (error) {
+      showStatus("Kirish rad etildi: " + error.message, true);
+      firstCategory.classList.add("hidden");
+      actionsNode.classList.add("hidden");
+      productList.replaceChildren();
+    });
+  });
 })();

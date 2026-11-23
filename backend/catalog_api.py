@@ -124,6 +124,12 @@ async def authenticate_telegram(payload: TelegramAuthRequest) -> dict[str, objec
     return {"authenticated": True, "user": user}
 
 
+@router.post("/admin/auth")
+async def authenticate_admin(payload: TelegramAuthRequest) -> dict[str, bool]:
+    validate_admin_init_data(payload.init_data)
+    return {"authenticated": True}
+
+
 @router.get("/categories")
 async def get_categories() -> list[dict[str, int | str]]:
     return list_categories()

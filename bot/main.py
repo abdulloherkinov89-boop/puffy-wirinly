@@ -31,9 +31,9 @@ def get_web_app_url() -> str:
 
 
 def get_admin_web_app_url() -> str:
-    """Return the admin Mini App route on the configured web app host."""
+    """Open the admin Mini App directly on its catalog management screen."""
     web_app = urlsplit(get_web_app_url())
-    return urlunsplit((web_app.scheme, web_app.netloc, "/admin", "", ""))
+    return urlunsplit((web_app.scheme, web_app.netloc, "/admin/products", "", ""))
 
 
 dp = Dispatcher()
