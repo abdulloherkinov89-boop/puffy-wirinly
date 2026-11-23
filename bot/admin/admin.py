@@ -2,12 +2,10 @@ from aiogram import F, Router
 from aiogram.filters import CommandStart
 from aiogram.types import CallbackQuery, Message
 
-from backend.database import list_categories
 from bot.admin.keyboards import (
     admin_analysis_keyboard,
     admin_home_keyboard,
     admin_mini_app_keyboard,
-    admin_products_keyboard,
 )
 
 ADMIN_IDS = {8327989068}
@@ -35,7 +33,6 @@ async def show_admin_welcome(message: Message, web_app_url: str) -> bool:
 @router.callback_query(
     F.data.in_(
         {
-            "admin:products",
             "admin:analysis",
             "admin:home",
             "admin:category_analysis",
@@ -53,13 +50,7 @@ async def admin_callback_handler(callback: CallbackQuery) -> None:
         return
 
     action = (callback.data or "").removeprefix("admin:")
-    if action == "products":
-        await callback.message.edit_text(
-            "Mahsulotlarni boshqarish bo'limiga xush kelibsiz. Kategoriya yoki yangi mahsulot "
-            "qo'shish uchun quyidagi amallardan birini tanlang.",
-            reply_markup=admin_products_keyboard(has_categories=bool(list_categories())),
-        )
-    elif action == "analysis":
+    if action == "analysis":
         await callback.message.edit_text(
             "Tahlillar bo'limi ochildi. Kategoriyalar yoki alohida mahsulotlar bo'yicha "
             "ma'lumotlarni ko'rish uchun quyidagi variantlardan birini tanlang.",

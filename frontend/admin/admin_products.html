@@ -27,61 +27,62 @@
   <main class="max-w-2xl mx-auto px-4 pt-6 space-y-5">
     <div>
       <h1 class="text-2xl font-extrabold tracking-tight">Mahsulotlar</h1>
-      <p class="text-sm text-zinc-500 mt-0.5">Menyu qo‘shish, narx va rasmlarni tahrirlash</p>
+      <p class="text-sm text-zinc-500 mt-0.5">Menyu, kategoriya va mahsulotlarni boshqarish</p>
     </div>
 
-    <input type="text" placeholder="Mahsulot qidirish..." class="w-full bg-[#f4f4f5] rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#e11d2a]/30">
-    <a href="/admin/products/add" class="flex items-center justify-center gap-2 bg-[#e11d2a] text-white font-bold text-sm rounded-2xl py-3.5 hover:opacity-90 transition">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
-      Yangi mahsulot qo‘shish
-    </a>
-    <div class="space-y-3">
-      <div class="flex items-center justify-between bg-[#f4f4f5] rounded-2xl p-4">
-        <div class="flex items-center gap-3.5">
-          <div class="w-14 h-14 rounded-xl bg-white flex items-center justify-center text-xs text-zinc-400">Rasm</div>
-          <div>
-            <h3 class="text-sm font-bold">Classic Burger</h3>
-            <p class="text-xs text-zinc-500 mt-0.5">Burgerlar</p>
-            <p class="text-sm font-extrabold text-[#e11d2a] mt-1">32 000 so‘m</p>
-          </div>
-        </div>
-        <a href="#" class="text-xs font-semibold bg-white rounded-xl px-3 py-2 hover:bg-zinc-200/70 transition">Tahrirlash</a>
-      </div>
-      <div class="flex items-center justify-between bg-[#f4f4f5] rounded-2xl p-4">
-        <div class="flex items-center gap-3.5">
-          <div class="w-14 h-14 rounded-xl bg-white flex items-center justify-center text-xs text-zinc-400">Rasm</div>
-          <div>
-            <h3 class="text-sm font-bold">Cheese Burger</h3>
-            <p class="text-xs text-zinc-500 mt-0.5">Burgerlar</p>
-            <p class="text-sm font-extrabold text-[#e11d2a] mt-1">36 000 so‘m</p>
-          </div>
-        </div>
-        <a href="#" class="text-xs font-semibold bg-white rounded-xl px-3 py-2 hover:bg-zinc-200/70 transition">Tahrirlash</a>
-      </div>
-      <div class="flex items-center justify-between bg-[#f4f4f5] rounded-2xl p-4">
-        <div class="flex items-center gap-3.5">
-          <div class="w-14 h-14 rounded-xl bg-white flex items-center justify-center text-xs text-zinc-400">Rasm</div>
-          <div>
-            <h3 class="text-sm font-bold">Free kartoshka</h3>
-            <p class="text-xs text-zinc-500 mt-0.5">Gazaklar</p>
-            <p class="text-sm font-extrabold text-[#e11d2a] mt-1">14 000 so‘m</p>
-          </div>
-        </div>
-        <a href="#" class="text-xs font-semibold bg-white rounded-xl px-3 py-2 hover:bg-zinc-200/70 transition">Tahrirlash</a>
-      </div>
-      <div class="flex items-center justify-between bg-[#f4f4f5] rounded-2xl p-4">
-        <div class="flex items-center gap-3.5">
-          <div class="w-14 h-14 rounded-xl bg-white flex items-center justify-center text-xs text-zinc-400">Rasm</div>
-          <div>
-            <h3 class="text-sm font-bold">Coca-Cola 0.5L</h3>
-            <p class="text-xs text-zinc-500 mt-0.5">Ichimliklar</p>
-            <p class="text-sm font-extrabold text-[#e11d2a] mt-1">8 000 so‘m</p>
-          </div>
-        </div>
-        <a href="#" class="text-xs font-semibold bg-white rounded-xl px-3 py-2 hover:bg-zinc-200/70 transition">Tahrirlash</a>
-      </div>
+    <div id="admin-status" class="hidden rounded-2xl px-4 py-3 text-sm" role="status"></div>
+    <section id="first-category" class="hidden rounded-2xl bg-[#f4f4f5] p-5 text-center">
+      <h2 class="font-bold">Avval kategoriya qo‘shing</h2>
+      <p class="mt-1 text-sm text-zinc-500">Mahsulot qo‘shish uchun kamida bitta kategoriya kerak.</p>
+      <button id="first-category-button" type="button" class="mt-4 rounded-2xl bg-[#e11d2a] px-5 py-3 text-sm font-bold text-white">＋ Birinchi kategoriyani qo‘shish</button>
+    </section>
+
+    <div id="admin-actions" class="hidden grid grid-cols-2 gap-3">
+      <button id="add-product-button" type="button" class="flex items-center justify-center gap-2 rounded-2xl bg-[#e11d2a] px-3 py-4 text-sm font-bold text-white hover:opacity-90">＋ Mahsulot qo‘shish</button>
+      <button id="add-category-button" type="button" class="flex items-center justify-center gap-2 rounded-2xl bg-[#f4f4f5] px-3 py-4 text-sm font-bold text-zinc-900 hover:bg-zinc-200">＋ Kategoriya qo‘shish</button>
     </div>
+
+    <input id="product-search" type="search" placeholder="Mahsulot qidirish..." class="hidden w-full rounded-2xl bg-[#f4f4f5] px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#e11d2a]/30">
+    <div id="category-list" class="flex gap-2 overflow-x-auto"></div>
+    <div id="product-list" class="space-y-3"></div>
   </main>
+
+  <div id="admin-modal" class="fixed inset-0 z-[60] hidden items-end justify-center bg-black/40 p-0 sm:items-center sm:p-4">
+    <section class="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-t-3xl bg-white p-5 sm:rounded-3xl">
+      <div class="mb-4 flex items-center justify-between">
+        <h2 id="modal-title" class="text-lg font-extrabold"></h2>
+        <button id="modal-close" type="button" class="rounded-full bg-zinc-100 px-3 py-1 text-lg" aria-label="Yopish">×</button>
+      </div>
+      <form id="category-form" class="hidden space-y-4">
+        <label class="block text-sm font-semibold">Kategoriya nomi
+          <input name="name" required maxlength="80" class="mt-1 w-full rounded-xl bg-zinc-100 px-3 py-3 font-normal outline-none focus:ring-2 focus:ring-red-200" placeholder="Masalan: Burgerlar">
+        </label>
+        <button class="w-full rounded-xl bg-[#e11d2a] py-3 font-bold text-white">Kategoriyani saqlash</button>
+      </form>
+      <form id="product-form" class="hidden space-y-4">
+        <label class="block text-sm font-semibold">Mahsulot nomi
+          <input name="name" required maxlength="120" class="mt-1 w-full rounded-xl bg-zinc-100 px-3 py-3 font-normal outline-none focus:ring-2 focus:ring-red-200" placeholder="Mahsulot nomi">
+        </label>
+        <label class="block text-sm font-semibold">Narxi (so‘m)
+          <input name="price" required type="number" min="1" step="1" class="mt-1 w-full rounded-xl bg-zinc-100 px-3 py-3 font-normal outline-none focus:ring-2 focus:ring-red-200" placeholder="25000">
+        </label>
+        <label class="block text-sm font-semibold">Kategoriya
+          <select name="category_id" required class="mt-1 w-full rounded-xl bg-zinc-100 px-3 py-3 font-normal outline-none focus:ring-2 focus:ring-red-200"></select>
+        </label>
+        <label class="block text-sm font-semibold">Mahsulot rasmi
+          <input name="image" type="file" accept="image/jpeg,image/png,image/webp" class="mt-1 w-full rounded-xl bg-zinc-100 px-3 py-3 text-sm font-normal">
+          <span class="mt-1 block text-xs font-normal text-zinc-500">JPG, PNG yoki WebP, 5 MB gacha. Yoki rasm havolasini kiriting.</span>
+        </label>
+        <label class="block text-sm font-semibold">Rasm havolasi (ixtiyoriy)
+          <input name="image_url" type="url" class="mt-1 w-full rounded-xl bg-zinc-100 px-3 py-3 font-normal outline-none focus:ring-2 focus:ring-red-200" placeholder="https://...">
+        </label>
+        <label class="block text-sm font-semibold">Tavsif
+          <textarea name="about" required maxlength="1000" rows="3" class="mt-1 w-full rounded-xl bg-zinc-100 px-3 py-3 font-normal outline-none focus:ring-2 focus:ring-red-200" placeholder="Mahsulot haqida qisqacha"></textarea>
+        </label>
+        <button class="w-full rounded-xl bg-[#e11d2a] py-3 font-bold text-white">Mahsulotni saqlash</button>
+      </form>
+    </section>
+  </div>
 
   <nav class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-md bg-white rounded-[28px] p-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.09)] border border-zinc-100 grid grid-cols-4 gap-1">
 
@@ -107,5 +108,7 @@
 
   </nav>
 
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="/frontend/js/admin_catalog.js"></script>
 </body>
 </html>

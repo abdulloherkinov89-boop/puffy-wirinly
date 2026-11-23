@@ -11,7 +11,6 @@ from aiogram.filters import CommandStart, StateFilter
 from aiogram.types import CallbackQuery, Message
 from backend.database import initialize_database, list_categories, save_user
 from bot.admin.admin import router as admin_router, show_admin_welcome
-from bot.admin.product_add import router as admin_product_router
 from bot.keyboard.default_key import create_default_keyboard
 from bot.keyboard.inline import create_inline_keyboard
 
@@ -39,7 +38,6 @@ def get_admin_web_app_url() -> str:
 
 dp = Dispatcher()
 dp.include_router(admin_router)
-dp.include_router(admin_product_router)
 
 
 @dp.message(CommandStart())
