@@ -6,6 +6,7 @@ from backend.database import list_categories
 from bot.admin.keyboards import (
     admin_analysis_keyboard,
     admin_home_keyboard,
+    admin_mini_app_keyboard,
     admin_products_keyboard,
 )
 
@@ -17,7 +18,7 @@ def is_admin(user_id: int) -> bool:
     return user_id in ADMIN_IDS
 
 
-async def show_admin_welcome(message: Message) -> bool:
+async def show_admin_welcome(message: Message, web_app_url: str) -> bool:
     """Show the admin welcome message and report whether the user is an admin."""
     user = message.from_user
     if user is None or not is_admin(user.id):
@@ -25,9 +26,8 @@ async def show_admin_welcome(message: Message) -> bool:
 
     await message.answer(
         f"Assalomu alaykum, admin {user.full_name}! 👋\n\n"
-        "Admin panelga xush kelibsiz. Mahsulotlarni boshqarish yoki tahlillarni ko'rish uchun "
-        "quyidagi bo'limlardan birini tanlang.",
-        reply_markup=admin_home_keyboard(),
+        "Admin panelni ochish uchun quyidagi tugmani bosing.",
+        reply_markup=admin_mini_app_keyboard(web_app_url),
     )
     return True
 

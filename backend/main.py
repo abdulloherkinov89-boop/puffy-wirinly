@@ -74,6 +74,19 @@ async def admin_home():
     return FileResponse(FRONTEND_ADMIN_DIR / "admin_home.html")
 
 
+@app.get("/admin/{page_name}")
+async def admin_page(page_name: str):
+    admin_pages = {
+        "products": "admin_products.html",
+        "orders": "admin_orders.html",
+        "users": "admin_users.html",
+    }
+    file_name = admin_pages.get(page_name)
+    if file_name is None:
+        return Response(status_code=404)
+    return FileResponse(FRONTEND_ADMIN_DIR / file_name)
+
+
 @app.get("/foydalanuvchilar/{page_name}")
 async def user_page(page_name: str):
     allowed_pages = {"home.html", "savat.html", "buyurtmalarim.html", "profile.html"}

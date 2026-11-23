@@ -1,4 +1,18 @@
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
+
+
+def admin_mini_app_keyboard(web_app_url: str) -> InlineKeyboardMarkup:
+    """Build the admin Mini App launch button."""
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text="🛠 Admin panelni ochish",
+                    web_app=WebAppInfo(url=web_app_url),
+                )
+            ]
+        ]
+    )
 
 
 def admin_home_keyboard() -> InlineKeyboardMarkup:

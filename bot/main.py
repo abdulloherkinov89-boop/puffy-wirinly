@@ -1,6 +1,7 @@
 import asyncio
 import os
 import re
+from urllib.parse import urlsplit, urlunsplit
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -30,6 +31,12 @@ def get_web_app_url() -> str:
     return web_app_url
 
 
+def get_admin_web_app_url() -> str:
+    """Return the admin Mini App route on the configured web app host."""
+    web_app = urlsplit(get_web_app_url())
+    return urlunsplit((web_app.scheme, web_app.netloc, "/admin", "", ""))
+
+
 dp = Dispatcher()
 dp.include_router(admin_router)
 dp.include_router(admin_product_router)
@@ -48,7 +55,7 @@ async def start_handler(message: Message):
         username=user.username,
     )
 
-    if await show_admin_welcome(message):
+    if await show_admin_welcome(message, get_admin_web_app_url()):
         return
 
     await message.answer(
