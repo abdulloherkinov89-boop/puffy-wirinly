@@ -1,7 +1,51 @@
 (function () {
-  var CART_KEY = "puffy_cart_v1";
+  var DEFAULT_CART_KEY = "puffy_cart_v1";
+  var CART_KEY = DEFAULT_CART_KEY;
+
+  function getWebApp() {
+    var webApp = window.Telegram && window.Telegram.WebApp;
+    webApp && webApp.ready && webApp.ready();
+    return webApp || null;
+  }
+
+  function getInitData() {
+    var webApp = getWebApp();
+    return webApp && webApp.initData ? webApp.initData : "";
+  }
+
+  function getTelegramUserId() {
+    var initData = getInitData();
+    if (!initData) return "";
+    try {
+      var params = new URLSearchParams(initData);
+      var user = JSON.parse(params.get("user") || "{}");
+      return user.id ? String(user.id) : "";
+    } catch (error) {
+      return "";
+    }
+  }
+
+  var telegramUserId = getTelegramUserId();
+  if (telegramUserId) {
+    CART_KEY = DEFAULT_CART_KEY + "_" + telegramUserId;
+  }
+
+  function isMiniAppLinked() {
+    return Boolean(getInitData() && getTelegramUserId());
+  }
+
+  function showLinkMessage() {
+    var message = "Telegram profilingiz ulanmagan. Mini appdan kirish yoki qayta urinib ko'ring.";
+    var webApp = getWebApp();
+    if (webApp && typeof webApp.showAlert === "function") {
+      webApp.showAlert(message);
+    } else {
+      window.alert(message);
+    }
+  }
 
   function readCart() {
+    if (!isMiniAppLinked()) return {};
     try {
       var value = JSON.parse(localStorage.getItem(CART_KEY) || "{}");
       return value && typeof value === "object" ? value : {};
@@ -14,12 +58,6 @@
   function saveCart(cart) {
     localStorage.setItem(CART_KEY, JSON.stringify(cart));
     window.dispatchEvent(new CustomEvent("shopcartchange"));
-  }
-
-  function getInitData() {
-    var webApp = window.Telegram && window.Telegram.WebApp;
-    webApp && webApp.ready && webApp.ready();
-    return webApp && webApp.initData ? webApp.initData : "";
   }
 
   function syncWithBackend(product, quantity) {
@@ -40,6 +78,11 @@
 
   function setQuantity(product, quantity) {
     if (!product || product.id == null) return;
+    if (!isMiniAppLinked()) {
+      showLinkMessage();
+      return;
+    }
+    cartRevision += 1;
     var cart = readCart();
     var id = String(product.id);
     var nextQuantity = Math.floor(Number(quantity) || 0);
@@ -78,9 +121,9 @@
     var total = 0;
 
     if (!entries.length) {
-      var empty = document.createElement("p");
-      empty.className = "catalog-status";
-      empty.textContent = "Savatingiz hozircha bo'sh.";
+      var empty = document.createElement("div");
+      empty.className = "empty-cart";
+      empty.innerHTML = '<div class="empty-cart-icon" aria-hidden="true"><span class="bag"><span class="bag-heart">♥</span></span></div><b>Savatingiz hozircha bo\'sh</b><small>Sevimli mahsulotlarni menyudan qo\'shing.</small><a href="/foydalanuvchilar/home.html">Menyuga o\'tish</a>';
       itemsNode.appendChild(empty);
     }
 
@@ -134,10 +177,17 @@
 
     var totalNode = document.getElementById("cart-total");
     if (totalNode) totalNode.textContent = formatPrice(total);
+    var orderButton = document.querySelector(".order");
+    if (orderButton) orderButton.hidden = entries.length === 0;
+    var totalBox = totalNode && totalNode.closest(".total");
+    if (totalBox) totalBox.hidden = entries.length === 0;
   }
+
+  var cartRevision = 0;
 
   function loadBackendCart() {
     var initData = getInitData();
+    var revisionAtStart = cartRevision;
     if (!initData) return;
     fetch("/api/cart/load", {
       method: "POST",
@@ -147,6 +197,7 @@
       if (!response.ok) throw new Error("HTTP " + response.status);
       return response.json();
     }).then(function (items) {
+      if (cartRevision !== revisionAtStart) return;
       var cart = {};
       items.forEach(function (item) {
         cart[String(item.product_id)] = {
