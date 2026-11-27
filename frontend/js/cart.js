@@ -35,7 +35,7 @@
   }
 
   function showLinkMessage() {
-    var message = "Telegram profilingiz ulanmagan. Mini appdan kirish yoki qayta urinib ko'ring.";
+    var message = "Siz Telegramdan ulanmagansiz. Iltimos, Telegram bot orqali Mini Appni oching.";
     var webApp = getWebApp();
     if (webApp && typeof webApp.showAlert === "function") {
       webApp.showAlert(message);
@@ -62,8 +62,8 @@
 
   function syncWithBackend(product, quantity) {
     var initData = getInitData();
-    if (!initData) return;
-    fetch("/api/cart/update", {
+    if (!initData) return Promise.resolve(false);
+    return fetch("/api/cart/update", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -71,16 +71,24 @@
         product_id: Number(product.id),
         quantity: Math.floor(quantity)
       })
+    }).then(function (response) {
+      if (!response.ok) {
+        showLinkMessage();
+        return false;
+      }
+      return true;
     }).catch(function (error) {
       console.error("[cart] Backend cart update failed", error);
+      showLinkMessage();
+      return false;
     });
   }
 
   function setQuantity(product, quantity) {
-    if (!product || product.id == null) return;
+    if (!product || product.id == null) return false;
     if (!isMiniAppLinked()) {
       showLinkMessage();
-      return;
+      return false;
     }
     cartRevision += 1;
     var cart = readCart();
@@ -102,6 +110,7 @@
     }
     saveCart(cart);
     syncWithBackend(product, nextQuantity);
+    return true;
   }
 
   function getQuantity(productId) {

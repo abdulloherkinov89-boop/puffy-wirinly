@@ -80,9 +80,10 @@
         addButton.setAttribute("aria-label", product.name + " savatga qo'shish");
         addButton.addEventListener("click", function (event) {
           event.stopPropagation();
-          cardQuantity = 1;
-          window.ShopCart.setQuantity(product, cardQuantity);
-          renderAddControl();
+          if (window.ShopCart.setQuantity(product, 1)) {
+            cardQuantity = 1;
+            renderAddControl();
+          }
         });
         addControl.appendChild(addButton);
         return;
@@ -94,9 +95,10 @@
       minusButton.setAttribute("aria-label", product.name + " sonini kamaytirish");
       minusButton.addEventListener("click", function (event) {
         event.stopPropagation();
-        cardQuantity -= 1;
-        window.ShopCart.setQuantity(product, cardQuantity);
-        renderAddControl();
+        if (window.ShopCart.setQuantity(product, cardQuantity - 1)) {
+          cardQuantity -= 1;
+          renderAddControl();
+        }
       });
       var count = document.createElement("span");
       count.textContent = cardQuantity;
@@ -106,9 +108,10 @@
       plusButton.setAttribute("aria-label", product.name + " sonini oshirish");
       plusButton.addEventListener("click", function (event) {
         event.stopPropagation();
-        cardQuantity += 1;
-        window.ShopCart.setQuantity(product, cardQuantity);
-        renderAddControl();
+        if (window.ShopCart.setQuantity(product, cardQuantity + 1)) {
+          cardQuantity += 1;
+          renderAddControl();
+        }
       });
       addControl.append(minusButton, count, plusButton);
     }
@@ -210,11 +213,11 @@
     }
   });
   document.getElementById("go").addEventListener("click", function () {
-    window.ShopCart.setQuantity(
+    var success = window.ShopCart.setQuantity(
       selectedProduct,
       window.ShopCart.getQuantity(selectedProduct.id) + quantity
     );
-    closeSheet();
+    if (success) closeSheet();
   });
   document.addEventListener("keydown", function (event) {
     if (event.key === "Escape") closeSheet();
